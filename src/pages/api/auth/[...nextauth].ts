@@ -1,5 +1,5 @@
 import connectDB from "lib/mongodb";
-import UserModel from "models/user";
+import UserModel, { User } from "models/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
@@ -17,12 +17,19 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials) => {
         if (!credentials) return null;
 
-        const user = await UserModel.findOne({ email: credentials.email });
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { id: user.id, name: user.name, email: user.email };
-          }
+        const user: User | null = await (UserModel as mongoose.Model<User>).findOne({ email: credentials.email }).exec();
+        
+        if (!user) {
+          console.log("User not found");
+          return null;
+        }
 
-        return null;
+        const isValidPassword = bcrypt.compare(credentials.password, user.password);
+        if (!isValidPassword) {
+          console.log("Invalid password");
+          return null;
+        }
+        return { id: user.id, name: user.name, email: user.email };
       },
     })
   ],

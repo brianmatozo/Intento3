@@ -9,14 +9,24 @@ interface ClientDetailsProps {
 const ClientLegajo = ({ lastClient }: ClientDetailsProps) => {
   const [isCopied, setIsCopied] = useState(false);
 
+  const clientDetails = () => `
+    Nombre completo:
+    ${lastClient?.fullname || ""}
+    Numero de Telefono: 
+    ${lastClient?.phonenumber || ""}
+    Correo electronico: 
+    ${lastClient?.email || ""}
+    Monto de inscripción: 
+    $${lastClient?.amount || 0}
+    Curso: 
+    ${lastClient?.courses || ""}
+    Modalidad: 
+    ${lastClient?.mode ? "online" : "presencial"}
+    Vendedores: Brian y Leandro
+  `;
+
   const handleCopy = async () => {
-    const textToCopy = `
-      Nombre completo: ${lastClient?.fullname}
-      Numero de Telefono: ${lastClient?.phonenumber}
-      Correo electronico: ${lastClient?.email}
-      Monto de inscripción: $${lastClient?.amount}
-      Vendedores: Brian y Leandro
-    `;
+    const textToCopy = clientDetails();
     await navigator.clipboard.writeText(textToCopy);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000); // Reset the tooltip text after 2 seconds
@@ -29,20 +39,11 @@ const ClientLegajo = ({ lastClient }: ClientDetailsProps) => {
       <Tooltip label={isCopied ? "Copied!" : "Click to copy"} placement="top" hasArrow>
         <Box mr={2} cursor="pointer" onClick={handleCopy} _hover={{ textDecoration: "underline" }}>
           <Text>
-            Nombre completo: <br />
-            {lastClient.fullname} <br />
-            Numero de Telefono: <br />
-            {lastClient.phonenumber} <br />
-            Correo electronico: <br />
-            {lastClient.email} <br />
-            Monto de inscripción: <br />${lastClient.amount} <br />
-            Vendedores: <br />
-            Brian y Leandro
+            {clientDetails()}
           </Text>
         </Box>
       </Tooltip>
     </Card>
   );
-};
+};export default ClientLegajo;
 
-export default ClientLegajo;

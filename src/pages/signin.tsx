@@ -12,6 +12,7 @@ const registerSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters long" }),
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
+  secretKey: z.string().min(1, { message: "Secret key is required" }),
 });
 
 const signInSchema = z.object({
@@ -51,8 +52,19 @@ const SignIn = () => {
   };
 
   const handleRegister = async (data: RegisterFormData) => {
+    if (data.secretKey !== process.env.NEXTAUTH_SECRET) {
+      toast({
+        title: "Invalid secret password.",
+        description: "You are not allowed to register.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+  
     const hashedPassword = bcrypt.hashSync(data.password, 10);
-
+  
     try {
       await axios.post("/api/register", { ...data, password: hashedPassword });
       toast({
@@ -74,6 +86,7 @@ const SignIn = () => {
       });
     }
   };
+  
 
   return (
     <Box maxW="md" mx="auto" mt={8} p={6} boxShadow="md" borderRadius="md" bg="white">
@@ -83,11 +96,18 @@ const SignIn = () => {
       <form onSubmit={isRegistering ? handleSubmitRegister(handleRegister) : handleSubmitSignIn(handleSignIn)}>
         <Stack spacing={4}>
           {isRegistering && (
+            <>
             <FormControl isInvalid={!!registerErrors.name}>
               <FormLabel>Name</FormLabel>
               <Input type="text" placeholder="Enter your name" {...registerRegister("name")} />
               <FormErrorMessage>{registerErrors.name?.message}</FormErrorMessage>
             </FormControl>
+            <FormControl isInvalid={!!registerErrors.secretKey}>
+              <FormLabel>Secret Password</FormLabel>
+              <Input type="text" placeholder="Enter the secret password" {...registerRegister("secretKey")} />
+              <FormErrorMessage>{registerErrors.secretKey?.message}</FormErrorMessage>
+            </FormControl>
+            </>
           )}
 
           <FormControl isInvalid={isRegistering ? !!registerErrors.email : !!signInErrors.email}>

@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       await connectDB();
 
-      const { fullname, phonenumber, email, amount, date } = req.body;
+      const { fullname, phonenumber, email, amount, date, mode, course } = req.body;
 
       const newClient = new ClientModel({
         fullname,
@@ -15,6 +15,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email,
         amount,
         date,
+        mode,
+        course
       });
 
       const savedClient = await newClient.save();

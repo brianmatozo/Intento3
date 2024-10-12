@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import ClientModel from "../models/client";
+import ClientModel, { Client } from "../models/client";
+import mongoose from "mongoose";
 
 export const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -10,7 +11,7 @@ export const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
       ? { fullname: { $regex: new RegExp(searchString, 'i') } }
       : {};
 
-    const clients = await ClientModel.find(filter).exec();
+    const clients: Client[] = await (ClientModel as mongoose.Model<Client>).find(filter).exec();
     res.status(200).json({ ok: true, data: clients });
   } catch (error) {
     console.error("Error fetching clients:", error);

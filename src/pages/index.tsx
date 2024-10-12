@@ -1,8 +1,29 @@
-import { Box, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+} from "@chakra-ui/react";
 import ShowClients from "components/client/ShowClients";
+import CourseForm from "components/forms/CourseForm";
 import FormComponent from "components/forms/FormComponent";
+import UserPopover from "components/ui/UserPopover";
 import { GetServerSideProps } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export default function Home() {
@@ -23,10 +44,21 @@ export default function Home() {
   return (
     <>
       <main>
-        <Tabs>
-          <TabList>
+        <Flex justify="space-between" align="center" p={4} bg="gray.100">
+          <Text fontSize="xl">
+            Welcome, {sessionData.user?.name || "User"}!
+          </Text>
+          <UserPopover
+            name={sessionData.user?.name || "User"}
+            email={sessionData.user?.email || undefined}
+          />
+        </Flex>
+
+        <Tabs isLazy>
+          <TabList display={"flex"}>
             <Tab>Inscribir Alumno</Tab>
             <Tab>Ver Alumnos</Tab>
+            <Tab>Crear Cursos</Tab>
           </TabList>
 
           <TabPanels>
@@ -35,6 +67,9 @@ export default function Home() {
             </TabPanel>
             <TabPanel>
               <ShowClients />
+            </TabPanel>
+            <TabPanel>
+              <CourseForm />
             </TabPanel>
           </TabPanels>
         </Tabs>

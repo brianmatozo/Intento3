@@ -1,7 +1,8 @@
 import connectDB from "lib/mongodb";
-import UserModel from "models/user";
+import UserModel, { User } from "models/user";
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
+import mongoose from "mongoose";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
@@ -11,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
       // Check if user already exists
-      const existingUser = await UserModel.findOne({ email });
+      const existingUser: User | null = await (UserModel as mongoose.Model<User>).findOne({ email }).exec();
       if (existingUser) {
         return res.status(400).json({ error: "User already exists" });
       }
