@@ -4,15 +4,16 @@ import {
   Input,
   Checkbox,
   Flex,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const ExpirationDateInput = () => {
-  const { control, watch } = useFormContext();
+const ExpirationDateInput = ({ control, watch, errors }: { control: any; watch: any; errors: any }) => {
+  // const { control, watch } = useFormContext();
   const mode = watch("mode");
 
   return (
-    <FormControl>
+    <FormControl isInvalid={!!errors.expirationDate}>
       <Flex alignItems="center">
         <FormLabel htmlFor="mode">Online Course</FormLabel>
         <Controller
@@ -35,6 +36,7 @@ const ExpirationDateInput = () => {
         isDisabled={!mode}
         {...control.register("expirationDate")}
       />
+      <FormErrorMessage>{errors.expirationDate?.message}</FormErrorMessage>
     </FormControl>
   );
 };

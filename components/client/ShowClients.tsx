@@ -80,7 +80,7 @@ const ShowClients = () => {
 
         {clients.length > 0 ? (
           clients.map((client) => (
-            <ClientItem key={client._id} client={client} />
+            <ClientItem key={client._id as string} client={client} />
           ))
         ) : (
           <Text>No hay alumnos</Text>

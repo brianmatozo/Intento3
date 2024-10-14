@@ -1,17 +1,32 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import ClientModel, { Client } from "../models/client";
-import mongoose from "mongoose";
+import mongoose, { FilterQuery } from "mongoose";
 
 export const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const { searchText } = req.query;
+    const { searchText, searchPhone } = req.query;
     const searchString = Array.isArray(searchText) ? searchText[0] : searchText;
+    const searchPhoneString = Array.isArray(searchPhone) ? searchPhone[0] : searchPhone;
+    const filter: FilterQuery<Client>  = {};
 
-    const filter = searchString
-      ? { fullname: { $regex: new RegExp(searchString, 'i') } }
-      : {};
+    if(searchString){
+       filter.fullname = { $regex: new RegExp(searchString, "i") } }
+  
+    if(searchPhoneString){
+      filter.phonenumber = { $regex: new RegExp(searchPhoneString, "i") } }
 
-    const clients: Client[] = await (ClientModel as mongoose.Model<Client>).find(filter).exec();
+    let clients: Client[];
+    if (searchString || searchPhoneString) {
+      clients = await (ClientModel as mongoose.Model<Client>)
+        .find(filter)
+        .exec();
+    } else {
+      clients = await (ClientModel as mongoose.Model<Client>)
+        .find(filter)
+        .limit(10)
+        .exec();
+    }
+    // const clients: Client[] = await (ClientModel as mongoose.Model<Client>).find(filter).exec();
     res.status(200).json({ ok: true, data: clients });
   } catch (error) {
     console.error("Error fetching clients:", error);

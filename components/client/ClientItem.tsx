@@ -45,7 +45,7 @@ const ClientItem = ({ client }: ClientItemProps) => {
       </Flex>
       <Flex justify="space-between" mt={4}>
         <Box>
-          <Text fontWeight="bold">Amount:</Text>
+          <Text fontWeight="bold">Monto:</Text>
           <Text>${client.amount}</Text>
         </Box>
         <Box>

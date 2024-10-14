@@ -1,5 +1,22 @@
-import { Document, model, models, Schema } from 'mongoose';
+// models/clientModel.ts
+import { Document, model, models, Schema } from "mongoose";
+import { OnlineCourseSchema } from "./online";
 
+interface onlineCourse {
+  name:
+    | "Refrigeracion"
+    | "Lavarropas"
+    | "Electronica"
+    | "Esp. Refrigeracion"
+    | "Esp. Lavarropas"
+    | "Rep. Plaquetas";
+  startDate: Date;
+  expirationDate?: Date; // Optional
+  certification: boolean;
+  matricula: boolean;
+}
+
+// Define the Client interface
 export interface Client extends Document {
   fullname: string;
   phonenumber: string;
@@ -7,12 +24,10 @@ export interface Client extends Document {
   amount: number;
   date: Date;
   mode: boolean;
-  courses: Schema.Types.ObjectId[];
-  certificationCard: boolean; // Represents if the student purchased the certification card
-  matriculaCard: boolean; // Represents if the student purchased the matricula card
+  onlineCourses?: onlineCourse[];
 }
 
-// Create the Client schema
+// Create the Client Schema
 const ClientSchema = new Schema<Client>({
   fullname: { type: String, required: true },
   phonenumber: { type: String, required: true },
@@ -20,11 +35,11 @@ const ClientSchema = new Schema<Client>({
   amount: { type: Number, required: true },
   date: { type: Date, required: true },
   mode: { type: Boolean, required: true },
-  courses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
-  certificationCard: { type: Boolean, default: false }, // Default to false
-  matriculaCard: { type: Boolean, default: false }, // Default to false
+  onlineCourses: [OnlineCourseSchema],
 });
 
-const ClientModel = models.Client || model<Client>("Client", ClientSchema, "clients");
+// Check for existing model or create a new one
+const ClientModel =
+  models.Client || model<Client>("Client", ClientSchema, "clients");
 
 export default ClientModel;
