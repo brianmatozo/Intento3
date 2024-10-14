@@ -14,4 +14,10 @@ export const clientSchema = z.object({
   date: z.coerce.date().default(() => new Date()),
   mode: z.boolean().default(false), // false = presencial, true = online
   onlineCourses: z.array(onlineCourseSchema).optional(), // Embed online courses
+  paymentOptions: z.enum([
+    "Efectivo",
+    "COAPSA",
+    "PABLO.BIANCHI",
+    "Carlos1971Marquez"
+  ]),
 });

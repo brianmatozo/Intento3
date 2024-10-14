@@ -7,6 +7,7 @@ import {
   Select,
   Checkbox,
   Flex,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import { forwardRef } from "react";
 import { useFormContext, Controller } from "react-hook-form";
@@ -63,7 +64,7 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
           <Controller
             name="onlineCourses.0.startDate" // Accessing the first course's start date
             control={control}
-            defaultValue={formattedCurrentDate} // Default to the current date
+            defaultValue={new Date()} // Default to the current date
             render={({ field }) => (
               <Input
                 type="date"
@@ -90,7 +91,7 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
           <Controller
             name="onlineCourses.0.expirationDate" // Accessing the first course's expiration date
             control={control}
-            defaultValue={formattedDefaultExpirationDate} // Set to 6 months from now
+            defaultValue={defaultExpirationDate} // Set to 6 months from now
             render={({ field }) => (
               <Input
                 type="date"
@@ -116,7 +117,14 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
                 name="onlineCourses.0.certification"
                 control={control}
                 render={({ field }) => (
-                  <Checkbox size="lg" {...field} isChecked={field.value} textColor={"white"}>
+                  <Checkbox
+                    size={"lg"}
+                    value="certification"
+                    isChecked={field.value}
+                    onChange={field.onChange}
+                    colorScheme="teal"
+                    textColor={"white"}
+                  >
                     Certificación
                   </Checkbox>
                 )}
@@ -129,7 +137,14 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
                 name="onlineCourses.0.matricula"
                 control={control}
                 render={({ field }) => (
-                  <Checkbox size="lg" {...field} isChecked={field.value} textColor={"white"}>
+                  <Checkbox
+                    size="lg"
+                    value="matricula"
+                    isChecked={field.value}
+                    onChange={field.onChange}
+                    colorScheme="teal"
+                    textColor={"white"}
+                  >
                     Matrícula
                   </Checkbox>
                 )}

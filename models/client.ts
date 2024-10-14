@@ -16,7 +16,6 @@ interface onlineCourse {
   matricula: boolean;
 }
 
-// Define the Client interface
 export interface Client extends Document {
   fullname: string;
   phonenumber: string;
@@ -25,6 +24,7 @@ export interface Client extends Document {
   date: Date;
   mode: boolean;
   onlineCourses?: onlineCourse[];
+  paymentOptions: string;
 }
 
 // Create the Client Schema
@@ -36,6 +36,16 @@ const ClientSchema = new Schema<Client>({
   date: { type: Date, required: true },
   mode: { type: Boolean, required: true },
   onlineCourses: [OnlineCourseSchema],
+  paymentOptions: {
+    type: String,
+    enum: [
+      "Efectivo",
+      "COAPSA",
+      "PABLO.BIANCHI",
+      "Carlos1971Marquez",
+    ],
+    required: true,
+  },
 });
 
 // Check for existing model or create a new one

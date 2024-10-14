@@ -7,7 +7,7 @@ import ExpirationDateInput from "components/course/ExpirationDateInput";
 import CourseNameInput from "components/course/NameInput";
 import StartDateInput from "components/course/StartDateInput";
 import { FormProvider, useForm } from "react-hook-form";
-import { courseSchema } from "schema/coursesSchemas";
+// import { courseSchema } from "schema/coursesSchemas";
 import { z } from "zod";
 import { DevTool } from "@hookform/devtools"
 

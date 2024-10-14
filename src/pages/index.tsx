@@ -1,15 +1,6 @@
 import {
-  Avatar,
   Box,
-  Button,
   Flex,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
   Spinner,
   Tab,
   TabList,
@@ -23,7 +14,7 @@ import CourseForm from "components/forms/CourseForm";
 import FormComponent from "components/forms/FormComponent";
 import UserPopover from "components/ui/UserPopover";
 import { GetServerSideProps } from "next";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export default function Home() {
@@ -69,7 +60,7 @@ export default function Home() {
               <ShowClients />
             </TabPanel>
             <TabPanel>
-              <CourseForm />
+              {/* <CourseForm /> */}
             </TabPanel>
           </TabPanels>
         </Tabs>

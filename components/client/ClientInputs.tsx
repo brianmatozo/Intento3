@@ -6,9 +6,9 @@ import {
   FormErrorMessage,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
   VStack,
   Flex,
+  Select,
 } from "@chakra-ui/react";
 import { EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
@@ -72,7 +72,27 @@ const ClientInputs = () => {
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
 
-        <FormControl id="amount" isInvalid={!!errors.amount}>
+        <Flex >
+        <FormControl id="paymentOptions" isInvalid={!!errors.paymentOptions} flex={3}>
+          <Controller
+            name="paymentOptions"
+            control={control}
+            defaultValue="COAPSA"
+            render={({ field }) => (
+              <Select {...field} ref={null}>
+                <option value="Efectivo">Efectivo</option>
+                <option value="COAPSA">COAPSA</option>
+                <option value="PABLO.BIANCHI">PABLO.BIANCHI</option>
+                <option value="Carlos1971Marquez">Carlos1971Marquez</option>
+              </Select>
+            )}
+          />
+          <FormErrorMessage>
+            {errors.paymentOptions?.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl id="amount" isInvalid={!!errors.amount} flex={9}>
           <Controller
             name="amount"
             control={control}
@@ -92,6 +112,7 @@ const ClientInputs = () => {
           />
           <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
         </FormControl>
+        </Flex>
 
         <FormControl id="date">
           <Flex>
