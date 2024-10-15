@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import ShowClients from "components/client/ShowClients";
-import CourseForm from "components/forms/CourseForm";
+import CourseForm from "trash/CourseForm";
 import FormComponent from "components/forms/FormComponent";
 import UserPopover from "components/ui/UserPopover";
 import { GetServerSideProps } from "next";

@@ -92,7 +92,7 @@ const ClientInputs = () => {
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl id="amount" isInvalid={!!errors.amount} flex={9}>
+        <FormControl id="amount" isInvalid={!!errors.amount} flex={5}>
           <Controller
             name="amount"
             control={control}
@@ -111,6 +111,20 @@ const ClientInputs = () => {
             )}
           />
           <FormErrorMessage>{errors.amount?.message}</FormErrorMessage>
+        </FormControl>
+
+        <FormControl id="paymentNumber" isInvalid={!!errors.paymentNumber} flex={4} >
+          <Controller
+            name="paymentNumber"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <InputGroup>
+                <Input type="text" {...field} placeholder="Nro.Comprobante" />
+              </InputGroup>
+            )}
+          />
+          <FormErrorMessage>{errors.paymentNumber?.message}</FormErrorMessage>
         </FormControl>
         </Flex>
 

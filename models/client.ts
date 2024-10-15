@@ -1,22 +1,9 @@
 // models/clientModel.ts
 import { Document, model, models, Schema } from "mongoose";
-import { OnlineCourseSchema } from "./online";
-
-interface onlineCourse {
-  name:
-    | "Refrigeracion"
-    | "Lavarropas"
-    | "Electronica"
-    | "Esp. Refrigeracion"
-    | "Esp. Lavarropas"
-    | "Rep. Plaquetas";
-  startDate: Date;
-  expirationDate?: Date; // Optional
-  certification: boolean;
-  matricula: boolean;
-}
+import { onlineCourse, OnlineCourseSchema } from "./online";
 
 export interface Client extends Document {
+  _id: string;
   fullname: string;
   phonenumber: string;
   email: string;
@@ -25,6 +12,7 @@ export interface Client extends Document {
   mode: boolean;
   onlineCourses?: onlineCourse[];
   paymentOptions: string;
+  paymentNumber: string;
 }
 
 // Create the Client Schema
@@ -46,6 +34,7 @@ const ClientSchema = new Schema<Client>({
     ],
     required: true,
   },
+  paymentNumber: { type: String, required: true },
 });
 
 // Check for existing model or create a new one

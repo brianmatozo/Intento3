@@ -1,6 +1,7 @@
 import { model, models, Schema } from "mongoose";
 
-interface OnlineCourse {
+export interface onlineCourse {
+  _id: string;
   name:
     | "Refrigeracion"
     | "Lavarropas"
@@ -14,7 +15,7 @@ interface OnlineCourse {
   matricula: boolean;
 }
 
-export const OnlineCourseSchema = new Schema<OnlineCourse>({
+export const OnlineCourseSchema = new Schema<onlineCourse>({
   name: {
     type: String,
     enum: [
@@ -35,6 +36,6 @@ export const OnlineCourseSchema = new Schema<OnlineCourse>({
 
 const OnlineCourseModel =
   models.OnlineCourse ||
-  model<OnlineCourse>("OnlineCourse", OnlineCourseSchema, "onlineCourses");
+  model<onlineCourse>("OnlineCourse", OnlineCourseSchema, "onlineCourses");
 
 export default OnlineCourseModel;

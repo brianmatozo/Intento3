@@ -1,4 +1,4 @@
-import { create } from "controllers/course";
+import { create } from "trash/courseControllers";
 import connectDB from "lib/mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 

@@ -1,4 +1,4 @@
-import CourseModel from "models/course";
+import CourseModel from "trash/course";
 import { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
 

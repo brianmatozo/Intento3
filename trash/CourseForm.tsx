@@ -1,11 +1,11 @@
 import { Box, Button, Stack, useToast } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import ClassCountInput from "components/course/ClassCountInput";
-import ClassScheduleInput from "components/course/ClassScheduleInput";
-import ExpirationDateInput from "components/course/ExpirationDateInput";
-import CourseNameInput from "components/course/NameInput";
-import StartDateInput from "components/course/StartDateInput";
+import ClassCountInput from "trash/ClassCountInput";
+import ClassScheduleInput from "trash/ClassScheduleInput";
+import ExpirationDateInput from "trash/ExpirationDateInput";
+import CourseNameInput from "trash/NameInput";
+import StartDateInput from "trash/StartDateInput";
 import { FormProvider, useForm } from "react-hook-form";
 // import { courseSchema } from "schema/coursesSchemas";
 import { z } from "zod";

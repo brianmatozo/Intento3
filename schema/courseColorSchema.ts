@@ -1,4 +1,5 @@
-export const getBadgeColor = (course: string) => {
+// schemas/courseColorSchema.ts
+export const getBadgeColor = (course: string): string => {
     switch (course) {
       case "Refrigeracion":
         return "blue";
