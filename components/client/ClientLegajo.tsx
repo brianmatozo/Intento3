@@ -1,7 +1,7 @@
-import { Box, Card, Tooltip, Text, Button } from "@chakra-ui/react";
+import { Box, Card, Tooltip, Button } from "@chakra-ui/react";
 import { useState } from "react";
-import { Client } from "models/client";
 import { CopyIcon } from "@chakra-ui/icons";
+import { Client } from "models/client";
 
 interface ClientDetailsProps {
   lastClient: Client | null;
@@ -21,13 +21,13 @@ ${lastClient?.phonenumber || ""}
 ${lastClient?.email || ""}
 
 💰Detalles del Pago: 
-$${lastClient?.amount || 0} - ${lastClient?.paymentOptions || ""}
+$${lastClient?.amount || 0} - ${lastClient?.paymentOptions || ""} - ${lastClient?.paymentNumber || ""}
 
 📍Curso: 
-${lastClient?.onlineCourses?.map((course) => course.name) || ""} - ${lastClient?.mode ? "online" : "presencial"}
+${lastClient?.onlineCourses?.map((course) => course.name) || ""} - ${lastClient?.mode ? "Online" : "Presencial"}
 
 👻Vendedores:
-Brian y Leandro
+Leandro y Brian
   `;
 
   const handleCopy = async () => {

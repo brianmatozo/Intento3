@@ -1,17 +1,20 @@
 // components/CertificationStatus.tsx
 import React, { useState } from 'react';
-import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody } from '@chakra-ui/react';
+import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Text, List, ListItem } from '@chakra-ui/react';
 import { PaymentForm } from './PaymentForm';
 import { MiscellaneousPayment } from 'schema/miscPaymentSchemas';
+import { miscPayment } from 'models/payments';
 
 interface CertificationStatusProps {
   clientId: string;
   certificationStatus: boolean;
   matriculaStatus: boolean;
   onStatusChange: (payment: MiscellaneousPayment) => void;
+  payments: miscPayment[]
+  courseId: string
 }
 
-export const CertificationStatus: React.FC<CertificationStatusProps> = ({ clientId, certificationStatus, matriculaStatus, onStatusChange }) => {
+export const CertificationStatus: React.FC<CertificationStatusProps> = ({ clientId, certificationStatus, matriculaStatus, onStatusChange, payments, courseId }) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [paymentType, setPaymentType] = useState<'certification' | 'matricula' | null>(null);
 
@@ -36,17 +39,48 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
         colorScheme={certificationStatus ? "green" : "red"}
         mr={2}
         cursor="pointer"
-        onClick={() => openPaymentModal('certification')}
-      >
+        onClick={() => {
+          if (!certificationStatus) {
+            openPaymentModal('certification');
+          }}}>
         {certificationStatus ? "Certificado" : "No Certificado"}
       </Badge>
       <Badge
         colorScheme={matriculaStatus ? "green" : "red"}
         cursor="pointer"
-        onClick={() => openPaymentModal('matricula')}
-      >
+        onClick={() => {
+          if (!matriculaStatus) {
+            openPaymentModal('matricula');
+          }}}>
         {matriculaStatus ? "Matriculado" : "No Matriculado"}
       </Badge>
+
+      <Box mt={2}>
+        <Text fontWeight="bold">Pagos Certificación:</Text>
+        <List>
+          {payments
+            .filter(p => p.paymentType === "certification" && p.courseId?.toString() === courseId)  // Filter by paymentType and courseId
+            .map((payment, index) => (
+              <ListItem key={index}>
+                {payment.amount} - {new Date(payment.paymentDate).toLocaleDateString()}
+              </ListItem>
+            ))}
+        </List>
+      </Box>
+
+      <Box mt={2}>
+        <Text fontWeight="bold">Pagos Matrícula:</Text>
+        <List>
+          {payments
+            .filter(p => p.paymentType === "matricula" && p.courseId?.toString() === courseId)  // Filter by paymentType and courseId
+            .map((payment, index) => (
+              <ListItem key={index}>
+                {payment.amount} - {new Date(payment.paymentDate).toLocaleDateString()}
+              </ListItem>
+            ))}
+        </List>
+      </Box>
+
 
       {paymentType && (
         <Modal isOpen={isPaymentModalOpen} onClose={closePaymentModal}>
@@ -57,8 +91,9 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
             <ModalBody>
               <PaymentForm 
                 clientId={clientId}
+                courseId={courseId}
                 paymentType={paymentType}
-                onPaymentComplete={handlePaymentComplete} 
+                onPaymentComplete={handlePaymentComplete}
               />
             </ModalBody>
           </ModalContent>

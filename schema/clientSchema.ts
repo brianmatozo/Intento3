@@ -20,5 +20,5 @@ export const clientSchema = z.object({
     "PABLO.BIANCHI",
     "Carlos1971Marquez"
   ]),
-  paymentNumber: z.string().nonempty({ message: "Numero de pago es requerido" }),
+  paymentNumber: z.string().nonempty({ message: "Obligatorio" }),
 });

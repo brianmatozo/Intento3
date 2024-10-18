@@ -12,7 +12,6 @@ import axios from "axios";
 import { Client } from "models/client";
 import { clientSchema } from "schema/clientSchema";
 import ClientInputs from "components/client/ClientInputs";
-import { DevTool } from "@hookform/devtools";
 import ClientModeSwitch from "components/client/ClientModeSwitch";
 import ClientLegajo from "components/client/ClientLegajo";
 
@@ -21,7 +20,7 @@ type FormData = z.infer<typeof clientSchema>;
 const FormComponent = () => {
   const [lastClient, setLastClient] = useState<Client | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  // const [isClient, setIsClient] = useState(false);
 
   const methods = useForm<FormData>({
     resolver: zodResolver(clientSchema),
@@ -32,9 +31,9 @@ const FormComponent = () => {
     },
   });
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  // useEffect(() => {
+  //   setIsClient(true);
+  // }, []);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -69,7 +68,7 @@ const FormComponent = () => {
             </Flex>
           </form>
         </FormProvider>
-        {isClient && <DevTool control={methods.control} />}
+
       </Card>
       {lastClient && <ClientLegajo lastClient={lastClient} />}
     </Box>

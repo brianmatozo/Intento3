@@ -1,6 +1,7 @@
 // models/clientModel.ts
 import { Document, model, models, Schema } from "mongoose";
 import { onlineCourse, OnlineCourseSchema } from "./online";
+import { miscellaneousPaymentSchema, miscPayment } from "./payments";
 
 export interface Client extends Document {
   _id: string;
@@ -10,9 +11,10 @@ export interface Client extends Document {
   amount: number;
   date: Date;
   mode: boolean;
-  onlineCourses?: onlineCourse[];
   paymentOptions: string;
   paymentNumber: string;
+  onlineCourses?: onlineCourse[];
+  miscellaneousPayments?: miscPayment[];
 }
 
 // Create the Client Schema
@@ -23,18 +25,10 @@ const ClientSchema = new Schema<Client>({
   amount: { type: Number, required: true },
   date: { type: Date, required: true },
   mode: { type: Boolean, required: true },
-  onlineCourses: [OnlineCourseSchema],
-  paymentOptions: {
-    type: String,
-    enum: [
-      "Efectivo",
-      "COAPSA",
-      "PABLO.BIANCHI",
-      "Carlos1971Marquez",
-    ],
-    required: true,
-  },
+  paymentOptions: { type: String, required: true },
   paymentNumber: { type: String, required: true },
+  onlineCourses: [OnlineCourseSchema],
+  miscellaneousPayments: [miscellaneousPaymentSchema],
 });
 
 // Check for existing model or create a new one

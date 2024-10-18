@@ -1,14 +1,16 @@
 // models/payments.ts
 import mongoose, { model, models, Schema } from "mongoose";
+import { Document } from "mongoose";
 
 export interface miscPayment extends Document {
   amount: number;
-  paymentType: string;
+  paymentType: "certification" | "matricula";
   clientId: mongoose.Schema.Types.ObjectId;
+  courseId: mongoose.Schema.Types.ObjectId;
   paymentDate: Date;
 }
 
-const miscellaneousPaymentSchema = new Schema<miscPayment>({
+export const miscellaneousPaymentSchema = new Schema<miscPayment>({
   amount: {
     type: Number,
     required: true,
@@ -20,8 +22,13 @@ const miscellaneousPaymentSchema = new Schema<miscPayment>({
     required: true,
   },
   clientId: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Client",
+    required: true,
+  },
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "OnlineCourse",
     required: true,
   },
   paymentDate: {
@@ -31,7 +38,7 @@ const miscellaneousPaymentSchema = new Schema<miscPayment>({
 });
 
 export const MiscellaneousPaymentModel =
-  models.miscPayment ||
+  models.MiscellaneousPayment ||
   model<miscPayment>(
     "MiscellaneousPayment",
     miscellaneousPaymentSchema,

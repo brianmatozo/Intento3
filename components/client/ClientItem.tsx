@@ -1,3 +1,4 @@
+// components/client/ClientItem.tsx
 import { Avatar, Badge, Box, Button, Divider, Flex, Text, Tooltip } from "@chakra-ui/react";
 import {
   Modal,
@@ -8,47 +9,77 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import CertificationStatus from "components/course/CertificationStatus";
+import CertificationStatus from "components/payments/CertificationStatus";
+import PaymentHistory from "components/payments/PaymentHistory";
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
 import { Client } from "models/client";
+import { miscPayment } from "models/payments";
 import React, { useEffect, useState } from "react";
 import { getBadgeColor } from "schema/courseColorSchema";
 import { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 
 interface ClientItemProps {
   client: Client;
-  payments: MiscellaneousPayment[];
+  payments: miscPayment[];
 }
 
-const ClientItem: React.FC<ClientItemProps> = ({ client, payments })=> {
+const ClientItem: React.FC<ClientItemProps> = ({ client, payments: initialPayments })=> {
   const [isCopied, setIsCopied] = useState(false);
-
   const [isOpen, setIsOpen] = useState(false);
-
+  const [courseStatuses, setCourseStatuses] = useState<{ [key: string]: { certification: boolean; matricula: boolean } }>({});
   const [certificationStatus, setCertificationStatus] = useState(false);
   const [matriculaStatus, setMatriculaStatus] = useState(false);
-
+// certificationStatus: A state variable to track whether the client has met the certification payment requirement. Initially set to false.
+// matriculaStatus: A state variable to track if the client has paid for matricula (enrollment). Initially set to false.
+// courses: This state holds the list of online courses associated with the client, initialized from client.onlineCourses (or an empty array if not provided).
   const [courses, setCourses] = useState(client.onlineCourses || []);
+  const [payments, setPayments] = useState(initialPayments); // Manage payments locally
 
   useEffect(() => {
-    const certificationTotal = payments?.filter(p => p.paymentType === 'certification')?.reduce((sum, p) => sum + p.amount, 0) || 0;
-    const matriculaTotal = payments?.filter(p => p.paymentType === 'matricula')?.reduce((sum, p) => sum + p.amount, 0) || 0;
+    const updatedStatuses: {[key: string]: { certification: boolean; matricula: boolean }} = {};
+    // For each course, calculate the certification/matricula status independently
+    courses.forEach((course) => {
+      const certificationTotal = payments
+      ?.filter(p => p.paymentType === 'certification' && p.courseId?.toString() === course._id)
+      ?.reduce((sum, p) => sum + p.amount, 0) || 0;
+      const matriculaTotal = payments
+      ?.filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === course._id)
+      ?.reduce((sum, p) => sum + p.amount, 0) || 0;
+      updatedStatuses[course._id] = { 
+        certification: certificationTotal >= CERTIFICATION_PRICE, 
+        matricula: matriculaTotal >= MATRICULA_PRICE };
+    })
+    setCourseStatuses(updatedStatuses);
+  }, [payments, courses]);
 
-    setCertificationStatus(certificationTotal >= CERTIFICATION_PRICE);
-    setMatriculaStatus(matriculaTotal >= MATRICULA_PRICE);
-  }, [payments]);
+// Purpose of useEffect: This hook recalculates the certification and matricula statuses whenever the payments array changes.
+// certificationTotal: Filters the payments array to only include those of type 'certification'. It then sums up the amount of all these payments. If there are no payments of this type, it defaults to 0.
+// matriculaTotal: Similarly, it filters for payments of type 'matricula' and sums up their amounts.
+// After calculating the totals, it updates the certificationStatus and matriculaStatus based on whether the totals meet or exceed predefined prices (CERTIFICATION_PRICE and MATRICULA_PRICE).
 
   const onOpen = () => setIsOpen(true);
   const onClose = () => setIsOpen(false);
 
   const handleStatusChange = async (payment: MiscellaneousPayment) => {
-    // Here you would make an API call to save the new payment
-    console.log('New payment:', payment);
-    // Update the local state (this should be done after successful API call in real implementation)
-    if (payment.amount === CERTIFICATION_PRICE) {
-      setCertificationStatus(true);
-    } else {
-      // setMatriculaStatus(true);
+    try {
+      const courseId = payment.courseId?.toString();
+      setPayments((prevPayments) => [...prevPayments, payment]);
+      const updatedStatus = {...courseStatuses }
+      if (updatedStatus[courseId]) {
+      if(payment.paymentType === 'certification') {
+        const newCertificationTotal = payments
+        .filter((p) => p.paymentType === 'certification' && p.courseId?.toString() === courseId)
+        .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
+        updatedStatus[courseId].certification = newCertificationTotal >= CERTIFICATION_PRICE;
+      }else if(payment.paymentType === 'matricula') {
+        const newMatriculaTotal = payments
+        .filter((p) => p.paymentType === 'matricula' && p.courseId?.toString() === courseId)
+        .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
+        updatedStatus[courseId].matricula = newMatriculaTotal >= MATRICULA_PRICE;
+      }}
+      setCourseStatuses(updatedStatus);
+    }catch(error) {
+      console.error('Error updating payments status:', error);
     }
   };
 
@@ -120,35 +151,41 @@ const ClientItem: React.FC<ClientItemProps> = ({ client, payments })=> {
         <ModalContent>
           <ModalHeader>Certificados</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Box>
+          <ModalBody >
             {courses.map((course, index) => (
               <Box key={index}>
-                <Badge
-                  colorScheme={getBadgeColor(course.name)}
-                  variant="solid"
-                >
-                  {course.name}
-                </Badge>
+                  <Badge
+                    colorScheme={getBadgeColor(course.name)}
+                    variant="solid"
+                    fontSize='1.1em'
+                    mt={1}
+                    >
+                    {course.name}
+                  </Badge>
                 <CertificationStatus
                   clientId={client._id}
-                  certificationStatus={certificationStatus}
-                  matriculaStatus={matriculaStatus}
+                  certificationStatus={courseStatuses[course._id]?.certification || false}
+                  matriculaStatus={courseStatuses[course._id]?.matricula || false}
+                  payments={payments.filter(p => p.courseId?.toString() === course._id)}
                   onStatusChange={handleStatusChange}
-                />
+                  courseId={course._id}
+                  />                  
                 <Divider mt={2}/>
               </Box>
               ))}
-            </Box>
+
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
+            <Button colorScheme='red' mr={3} onClick={onClose}>
+              Cerrar
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>
+
+    {/* Display payment history below courses */}
+    {/* <PaymentHistory payments={payments} /> */}
 
     </Box>
   );

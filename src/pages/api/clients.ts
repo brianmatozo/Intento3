@@ -1,13 +1,11 @@
+// pages/api/clients.ts
 import { NextApiRequest, NextApiResponse } from "next";
-import connectDB from "../../../lib/mongodb";
 import ClientModel from "../../../models/client";
 import { getAll } from "controllers/client";
 import { clientSchema } from "schema/clientSchema";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    await connectDB();
-
     if (req.method === "POST") {
       const result = await clientSchema.safeParse(req.body);
 
