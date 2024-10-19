@@ -1,29 +1,23 @@
-# Create T3 App
+# next-auth-mongoose-example
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A simple example of how to use [next-auth](https://next-auth.js.org/) with [mongoose](https://mongoosejs.com/) as the database adapter.
 
-## What's next? How do I make an app with this?
+## How to use
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+1. Clone the repository
+2. Install the dependencies with `npm install` or `yarn install`
+3. Create a new file called `.env.local` and add the following variables:
+	* `MONGODB_URI`: the URI of your MongoDB instance
+	* `NEXTAUTH_SECRET`: a secret key for next-auth
+4. Run the development server with `npm run dev` or `yarn dev`
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## What is this example showing?
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+This example is showing how to use next-auth with mongoose as the database adapter to store users and sessions. It also shows how to use the built-in `Credentials` provider to allow users to sign in with their email and password.
 
-## Learn More
+The example also includes a simple protected page at `/protected` that only allows authenticated users to access it.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## License
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

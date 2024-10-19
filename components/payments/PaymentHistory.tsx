@@ -1,20 +1,38 @@
 import { Box, List, ListItem, Text } from "@chakra-ui/react";
 import { miscPayment } from "models/payments";
 
-const PaymentHistory: React.FC<{ payments: miscPayment[] }> = ({ payments }) => {
-    return (
-      <Box mt={4}>
-        <Text fontWeight="bold">Payment History</Text>
-        <List spacing={2}>
-          {payments.map((payment, index) => (
-            <ListItem key={index}>
-              {payment.paymentType === "certification" ? "Certification" : "Matricula"}: 
-              {payment.amount} - {new Date(payment.paymentDate).toLocaleDateString()}
+interface PaymentHistoryProps {
+  payments: miscPayment[];
+  courseId?: string;
+}
+
+const PaymentHistory: React.FC<PaymentHistoryProps> = ({ payments, courseId }) => {
+  return (
+    <Box mt={4}>
+      
+      <Text fontWeight="bold">Historial de Pagos</Text>
+      <List spacing={2}>
+        {payments
+          .filter(p => 
+            (p.paymentType === "certification" || p.paymentType === "matricula") && 
+            (!courseId || p.courseId?.toString() === courseId)
+          )
+          .map((payment, index) => (
+            <ListItem key={index} display="flex" justifyContent="space-between">
+              <Text>
+                {payment.paymentType === "certification" ? "Certificacion" : "Matricula"}: 
+                ${payment.amount} 
+              </Text>
+              <Text>
+                {new Date(payment.paymentDate).toLocaleDateString()}
+                {" - "}
+                {payment.miscPaymentOptions} - {payment.miscPaymentNumber}
+              </Text>
             </ListItem>
           ))}
-        </List>
-      </Box>
-    );
-  };
+      </List>
+    </Box>
+  );
+};
 
 export default PaymentHistory;

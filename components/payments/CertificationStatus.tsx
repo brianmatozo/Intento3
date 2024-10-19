@@ -1,9 +1,10 @@
 // components/CertificationStatus.tsx
 import React, { useState } from 'react';
-import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Text, List, ListItem } from '@chakra-ui/react';
+import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Text, List, ListItem, Flex, space, HStack } from '@chakra-ui/react';
 import { PaymentForm } from './PaymentForm';
 import { MiscellaneousPayment } from 'schema/miscPaymentSchemas';
 import { miscPayment } from 'models/payments';
+import PaymentHistory from './PaymentHistory';
 
 interface CertificationStatusProps {
   clientId: string;
@@ -34,7 +35,8 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
   };
 
   return (
-    <Box>
+    <Box >
+      <HStack justifyContent={"center"} spacing={4} mt={2}>
       <Badge
         colorScheme={certificationStatus ? "green" : "red"}
         mr={2}
@@ -54,7 +56,9 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
           }}}>
         {matriculaStatus ? "Matriculado" : "No Matriculado"}
       </Badge>
-
+      </HStack>
+      
+      {/* <Flex justifyContent={"space-between"}>
       <Box mt={2}>
         <Text fontWeight="bold">Pagos Certificación:</Text>
         <List>
@@ -80,13 +84,15 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
             ))}
         </List>
       </Box>
+      </Flex> */}
 
+      <PaymentHistory payments={payments} courseId={courseId}/>
 
       {paymentType && (
         <Modal isOpen={isPaymentModalOpen} onClose={closePaymentModal}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Payment for {paymentType === 'certification' ? 'Certification' : 'Matricula'}</ModalHeader>
+            <ModalHeader>Pago de {paymentType === 'certification' ? 'Certification' : 'Matricula'}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <PaymentForm 

@@ -3,6 +3,7 @@ import { Box, Button, Card, Heading, Input, Spinner, Text } from "@chakra-ui/rea
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import ClientItem from "components/client/ClientItem";
+// import ClientItem from "components/client/ClientItem";
 import { Client } from "models/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -81,7 +82,7 @@ const ShowClients = () => {
 
         {clients.length > 0 ? (
           clients.map((client) => (
-            <ClientItem key={client._id as string} client={client} payments={client.miscellaneousPayments || []}/>
+               <ClientItem key={client._id as string} client={client} payments={client.miscellaneousPayments || []} />
           ))
         ) : (
           <Text>No hay alumnos</Text>

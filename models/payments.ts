@@ -8,6 +8,8 @@ export interface miscPayment extends Document {
   clientId: mongoose.Schema.Types.ObjectId;
   courseId: mongoose.Schema.Types.ObjectId;
   paymentDate: Date;
+  miscPaymentOptions: "Efectivo" | "COAPSA" | "PABLO.BIANCHI" | "Carlos1971Marquez";
+  miscPaymentNumber: string;
 }
 
 export const miscellaneousPaymentSchema = new Schema<miscPayment>({
@@ -34,6 +36,15 @@ export const miscellaneousPaymentSchema = new Schema<miscPayment>({
   paymentDate: {
     type: Date,
     default: Date.now,
+  },
+  miscPaymentOptions: {
+    type: String,
+    enum: ["Efectivo", "COAPSA", "PABLO.BIANCHI", "Carlos1971Marquez"],
+    required: true,
+  },
+  miscPaymentNumber: {
+    type: String,
+    required: true,
   },
 });
 

@@ -7,7 +7,7 @@ import {
   Select,
   Checkbox,
   Flex,
-  CheckboxGroup,
+  HStack,
 } from "@chakra-ui/react";
 import { forwardRef } from "react";
 import { useFormContext, Controller } from "react-hook-form";
@@ -17,26 +17,26 @@ import { z } from "zod";
 type OnlineCourseFormData = z.infer<typeof onlineCourseSchema>;
 
 const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
-  (props, ref) => {
+  ({ index, ...props }, ref) => {
+   
     const {
       control,
       formState: { errors },
     } = useFormContext<{ onlineCourses: OnlineCourseFormData[] }>();
 
-    const formattedCurrentDate = new Date().toISOString().slice(0, 10); // Get current date in the correct format
-    // Calculate default expiration date as 6 months from now
+    const formattedCurrentDate = new Date().toISOString().slice(0, 10); 
     const defaultExpirationDate = new Date();
-    defaultExpirationDate.setMonth(defaultExpirationDate.getMonth() + 6); // Add 6 months
+    defaultExpirationDate.setMonth(defaultExpirationDate.getMonth() + 6);
     const formattedDefaultExpirationDate = defaultExpirationDate
       .toISOString()
       .slice(0, 10); // Format to "YYYY-MM-DD"
 
-    return (
+    return (  
       <Box mt={2}>
-        <FormControl id="name" isInvalid={!!errors.onlineCourses?.[0]?.name}>
+        <FormControl id={`onlineCourses.${index}.name`} isInvalid={!!errors.onlineCourses?.[0]?.name}>
           <FormLabel fontSize={"sm"}>Curso</FormLabel>
           <Controller
-            name="onlineCourses.0.name" // Accessing the first course in the onlineCourses array
+            name={`onlineCourses.${index}.name`} // Accessing the first course in the onlineCourses array
             control={control}
             defaultValue="Refrigeracion"
             render={({ field }) => (
@@ -56,13 +56,13 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
         </FormControl>
 
         <FormControl
-          id="startDate"
+          id={`onlineCourses.${index}.startDate`}
           isInvalid={!!errors.onlineCourses?.[0]?.startDate}
           py={2}
         >
           <FormLabel fontSize={"sm"}>Fecha de inicio</FormLabel>
           <Controller
-            name="onlineCourses.0.startDate" // Accessing the first course's start date
+            name={`onlineCourses.${index}.startDate`} // Accessing the first course's start date
             control={control}
             defaultValue={new Date()} // Default to the current date
             render={({ field }) => (
@@ -84,12 +84,12 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
         </FormControl>
 
         <FormControl
-          id="expirationDate"
+          id={`onlineCourses.${index}.expirationDate`}
           isInvalid={!!errors.onlineCourses?.[0]?.expirationDate}
         >
           <FormLabel fontSize={"sm"}>Fecha de expiración</FormLabel>
           <Controller
-            name="onlineCourses.0.expirationDate" // Accessing the first course's expiration date
+            name={`onlineCourses.${index}.expirationDate`}// Accessing the first course's expiration date
             control={control}
             defaultValue={defaultExpirationDate} // Set to 6 months from now
             render={({ field }) => (
@@ -110,11 +110,11 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
           </FormErrorMessage>
         </FormControl>
 
-        <Flex justify={"space-between"} mt={4}>
+        <HStack mt={4}>
           <Box bg={"teal.500"} p={2} rounded={"md"}>
-            <FormControl id="certification">
+            <FormControl id={`onlineCourses.${index}.certification`}>
               <Controller
-                name="onlineCourses.0.certification"
+                name={`onlineCourses.${index}.certification`}
                 control={control}
                 render={({ field }) => (
                   <Checkbox
@@ -132,9 +132,9 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
             </FormControl>
           </Box>
           <Box bg={"teal.500"} p={2} rounded={"md"}>
-            <FormControl id="matricula">
+            <FormControl id={`onlineCourses.${index}.matricula`}>
               <Controller
-                name="onlineCourses.0.matricula"
+                name={`onlineCourses.${index}.matricula`}
                 control={control}
                 render={({ field }) => (
                   <Checkbox
@@ -151,7 +151,7 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
               />
             </FormControl>
           </Box>
-        </Flex>
+        </HStack>
       </Box>
     );
   }

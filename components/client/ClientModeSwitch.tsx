@@ -1,14 +1,28 @@
-import { Box, FormControl, FormLabel, Switch, Highlight } from "@chakra-ui/react";
-import { Controller, useFormContext } from "react-hook-form";
+// components/client/ClientModeSwitch.tsx
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Switch,
+  Highlight,
+  Flex,
+} from "@chakra-ui/react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { useEffect, useState } from "react";
 import OnlineCourseComponent from "components/course/OnlineCourseComponent";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const ClientModeSwitch = () => {
   const { control, setValue, watch } = useFormContext();
   const [showOnlineCourse, setShowOnlineCourse] = useState(false);
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "onlineCourses",
+  });
+
   useEffect(() => {
-    const subscription = watch((value)=>{
+    const subscription = watch((value) => {
       setShowOnlineCourse(value.mode);
     });
     return () => subscription.unsubscribe();
@@ -43,7 +57,7 @@ const ClientModeSwitch = () => {
                 setShowOnlineCourse(e.target.checked);
                 // Clear onlineCourses when the switch is turned off
                 if (!e.target.checked) {
-                    setValue("onlineCourses", []); // Set onlineCourses to an empty array
+                  setValue("onlineCourses", []); // Set onlineCourses to an empty array
                 }
               }}
             />
@@ -51,25 +65,34 @@ const ClientModeSwitch = () => {
         />
       </FormControl>
       {showOnlineCourse && (
-        <Controller
-          name="onlineCourses"
-          control={control}
-          render={({ field }) => (
-            <OnlineCourseComponent
-              {...field}
-              defaultValue={[
-                {
-                  name: "",
-                  startDate: new Date().toISOString().slice(0, 16),
-                  expirationDate: "",
-                  certification: false,
-                  matricula: false,
-                },
-              ]}
-              value={field.value}
-            />
-          )}
-        />
+        <>
+          {fields.map((field, index) => (
+            <Box key={field.id} mt={2}>
+              <OnlineCourseComponent control={control} index={index} />
+              <DeleteIcon
+                boxSize={8}
+                cursor={"pointer"}
+                color="red.500"
+                onClick={() => remove(index)}
+                position={"relative"}
+                top={-39}
+                right={-380}
+              />
+            </Box>
+          ))}
+          <Flex justifyContent={"center"}>
+          <AddIcon
+            cursor={"pointer"}
+            boxSize={8}
+            color={"green.500"}
+            onClick={() =>
+              append({
+                startDate: new Date().toISOString().slice(0, 16),
+              })
+            }
+          />
+          </Flex>
+        </>
       )}
     </Box>
   );

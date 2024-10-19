@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       await newClient.save()
 
-      res.status(201).json(newClient);
+      res.status(201).json(newClient);  
     } else if (req.method === "GET") {
       return getAll(req, res);
     } else {

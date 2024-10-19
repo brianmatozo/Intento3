@@ -7,6 +7,13 @@ export const miscellaneousPaymentSchema = z.object({
   courseId: z.string().nonempty("Course ID is required"),
   clientId: z.string().nonempty("Client ID is required"),
   paymentDate: z.date().default(() => new Date()),
+  miscPaymentOptions: z.enum([
+    "Efectivo",
+    "COAPSA",
+    "PABLO.BIANCHI",
+    "Carlos1971Marquez"
+  ]),
+  miscPaymentNumber: z.string().nonempty({ message: "Obligatorio" }),
 });
 
 export type MiscellaneousPayment = z.infer<typeof miscellaneousPaymentSchema>;
