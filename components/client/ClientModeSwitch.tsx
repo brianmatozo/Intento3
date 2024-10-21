@@ -68,7 +68,7 @@ const ClientModeSwitch = () => {
         <>
           {fields.map((field, index) => (
             <Box key={field.id} mt={2}>
-              <OnlineCourseComponent  index={index} />
+              <OnlineCourseComponent index={index} />
               <DeleteIcon
                 boxSize={8}
                 cursor={"pointer"}

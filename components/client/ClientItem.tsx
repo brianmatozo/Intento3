@@ -2,14 +2,12 @@ import { Avatar, Badge, Box, Button, Flex, Text, Tooltip } from "@chakra-ui/reac
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
 import type { Client } from "models/client";
 import { useEffect, useState } from "react";
-import type { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 import CertificationModal from "../ui/CertificationModal";
 import { getBadgeColor } from "schema/courseColorSchema";
 import type { onlineCourse } from "models/online";
 import axios from "axios";
 import AddCourseForm from "./AddCourseForm";
 import type { miscPayment } from "models/miscPayments";
-import { p } from "framer-motion/client";
 import mongoose from "mongoose";
 
 interface ClientItemProps {
@@ -27,12 +25,13 @@ useEffect(() => {
   const updatedStatuses: Record<string, { certification: boolean; matricula: boolean }> = {};
 
   courses.forEach((course) => {
+    const courseIdString = course._id?.toString() ?? '';
     const certificationTotal = payments
-      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === course._id?.toString())
+      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseIdString)
       .reduce((sum, p) => sum + p.amount, 0) || 0;
 
     const matriculaTotal = payments
-      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === course._id?.toString())
+      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseIdString)
       .reduce((sum, p) => sum + p.amount, 0) || 0;
 
     updatedStatuses[course._id] = {
@@ -50,17 +49,16 @@ const handleStatusChange = async (payment: Omit<miscPayment, '_id'>) => {
   };
   setPayments((prevPayments) => [...prevPayments, updatedPayment]);
 
-  const courseId = payment.courseId?.toString();
-  // setPayments((prevPayments) => [...prevPayments, payment]);
+  const courseId = payment.courseId?.toString() ?? '';
 
   const updatedStatus = { ...courseStatuses };
   if (updatedStatus[courseId]) {
     const certificationTotal = payments
-      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseId.toString())
+      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseId)
       .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
 
     const matriculaTotal = payments
-      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseId.toString())
+      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseId)
       .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
 
     updatedStatus[courseId].certification = certificationTotal >= CERTIFICATION_PRICE;

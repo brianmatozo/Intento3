@@ -32,10 +32,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   courseId,
   onPaymentComplete,
 }) => {
-  // const [amount, setAmount] = useState("");
-  // const targetAmount =
-  //   paymentType === "certification" ? CERTIFICATION_PRICE : MATRICULA_PRICE;
-
   const methods = useForm<MiscellaneousPayment>();
 
 const handleSubmit = async (data: MiscellaneousPayment) => {
@@ -66,13 +62,13 @@ const handleSubmit = async (data: MiscellaneousPayment) => {
     }
     // console.log("Parsed data before sending to backend:", parsedData.data);
 
-    const response = await axios.post("/api/payments", parsedData.data);
+    const response = await axios.post<miscPayment>("/api/payments", parsedData.data);
     if (!response || response.status !== 201) {
       throw new Error("Failed to save data");
     }
 
     const savedPayment: miscPayment = response.data;
-    onPaymentComplete(savedPayment);
+    await onPaymentComplete(savedPayment);
   } catch (error) {
     console.error("Invalid payment data:", error);
   }

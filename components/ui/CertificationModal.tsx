@@ -1,6 +1,5 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import type { onlineCourse } from "models/online";
-import type { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 import CoursesList from "../payments/CoursesList";
 import type { Client } from "models/client";
 import type { miscPayment } from "models/miscPayments";

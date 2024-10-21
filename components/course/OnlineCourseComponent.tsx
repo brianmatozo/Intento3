@@ -15,9 +15,12 @@ import type { z } from "zod";
 
 type OnlineCourseFormData = z.infer<typeof onlineCourseSchema>;
 
-const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
+interface OnlineCourseComponentProps {
   index: number;
-}>(({ index }, _) => {
+}
+
+const OnlineCourseComponent = forwardRef<HTMLSelectElement, OnlineCourseComponentProps>(
+  ({ index }, ref) => {
   
     const {
       control,
@@ -33,14 +36,14 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
 
     return (  
       <Box mt={2}>
-        <FormControl id={`onlineCourses.${index}.name`} isInvalid={!!errors.onlineCourses?.[0]?.name}>
-          <FormLabel fontSize={"sm"}>Curso</FormLabel>
+        <FormControl id={`onlineCourses.${index}.name`} isInvalid={!!errors.onlineCourses?.[index]?.name}>
+          <FormLabel fontSize="md">Curso</FormLabel>
           <Controller
             name={`onlineCourses.${index}.name`} // Accessing the first course in the onlineCourses array
             control={control}
             defaultValue="Refrigeracion"
             render={({ field }) => (
-              <Select {...field} ref={null} size={"sm"}>
+              <Select {...field} ref={ref} size="md">
                 <option value="Refrigeracion">Refrigeracion</option>
                 <option value="Lavarropas">Lavarropas</option>
                 <option value="Electronica">Electronica</option>
@@ -51,16 +54,16 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
             )}
           />
           <FormErrorMessage>
-            {errors.onlineCourses?.[0]?.name?.message}
+            {errors.onlineCourses?.[index]?.name?.message}
           </FormErrorMessage>
         </FormControl>
 
         <FormControl
           id={`onlineCourses.${index}.startDate`}
-          isInvalid={!!errors.onlineCourses?.[0]?.startDate}
+          isInvalid={!!errors.onlineCourses?.[index]?.startDate}
           py={2}
         >
-          <FormLabel fontSize={"sm"}>Fecha de inicio</FormLabel>
+          <FormLabel fontSize="md">Fecha de inicio</FormLabel>
           <Controller
             name={`onlineCourses.${index}.startDate`} // Accessing the first course's start date
             control={control}
@@ -69,7 +72,7 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
               <Input
                 type="date"
                 {...field}
-                size={"sm"}
+                size="md"
                 value={
                   field.value
                     ? new Date(field.value).toISOString().slice(0, 10)
@@ -79,15 +82,15 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
             )}
           />
           <FormErrorMessage>
-            {errors.onlineCourses?.[0]?.startDate?.message}
+            {errors.onlineCourses?.[index]?.startDate?.message}
           </FormErrorMessage>
         </FormControl>
 
         <FormControl
           id={`onlineCourses.${index}.expirationDate`}
-          isInvalid={!!errors.onlineCourses?.[0]?.expirationDate}
+          isInvalid={!!errors.onlineCourses?.[index]?.expirationDate}
         >
-          <FormLabel fontSize={"sm"}>Fecha de expiración</FormLabel>
+          <FormLabel fontSize="md">Fecha de expiración</FormLabel>
           <Controller
             name={`onlineCourses.${index}.expirationDate`}// Accessing the first course's expiration date
             control={control}
@@ -96,7 +99,7 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
               <Input
                 type="date"
                 {...field}
-                size={"sm"}
+                size="md"
                 value={
                   field.value
                     ? new Date(field.value).toISOString().slice(0, 10)
@@ -106,7 +109,7 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
             )}
           />
           <FormErrorMessage>
-            {errors.onlineCourses?.[0]?.expirationDate?.message}
+            {errors.onlineCourses?.[index]?.expirationDate?.message}
           </FormErrorMessage>
         </FormControl>
 
@@ -155,5 +158,8 @@ const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
       </Box>
     );
   }
-);
+)
+
+OnlineCourseComponent.displayName = "OnlineCourseComponent";
+
 export default OnlineCourseComponent;

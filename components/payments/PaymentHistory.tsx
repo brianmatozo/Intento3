@@ -9,13 +9,12 @@ interface PaymentHistoryProps {
 const PaymentHistory: React.FC<PaymentHistoryProps> = ({ payments, courseId }) => {
   return (
     <Box mt={4}>
-      
       <Text fontWeight="bold">Historial de Pagos</Text>
       <List spacing={2}>
         {payments
           .filter(p => 
             (p.paymentType === "certification" || p.paymentType === "matricula") && 
-            (!courseId || p.courseId?.toString() !== '[object Object]' && p.courseId?.toString() === courseId)
+            (!courseId || (p.courseId?.toString() === courseId))
           )
           .map((payment, index) => (
             <ListItem key={index} display="flex" justifyContent="space-between">

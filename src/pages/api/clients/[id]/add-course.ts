@@ -20,10 +20,10 @@ const addCourseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!client) {
       return res.status(404).json({ error: "Client not found" });
     }
-    client.onlineCourses?.push(newCourse as onlineCourse);
+    client.onlineCourses?.push(validationResult.data as onlineCourse);
     await client.save();
 
-    res.status(200).json(newCourse);
+    res.status(200).json(validationResult.data);
   } catch (error) {
     console.error("Failed to add course:", error);
     res.status(500).json({ error: "Failed to add course" });

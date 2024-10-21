@@ -46,7 +46,7 @@ export default function Home() {
       </Box>
       <Divider />
       <Box p={4}>
-        <Tabs variant={"enclosed"}>
+        <Tabs variant={"enclosed"} isLazy>
           <TabList>
             <Tab>Inscribir Alumno</Tab>
             <Tab>Ver Alumnos</Tab>

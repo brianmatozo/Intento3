@@ -4,7 +4,6 @@ import type { Client } from "models/client";
 import type { miscPayment } from "models/miscPayments";
 import type { onlineCourse } from "models/online";
 import { getBadgeColor } from "schema/courseColorSchema";
-import type { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 
 interface CoursesListProps {
     client: Client;
@@ -30,7 +29,7 @@ interface CoursesListProps {
               matriculaStatus={courseStatuses[course._id]?.matricula ?? false}
               payments={payments.filter(p => p.courseId?.toString() === course._id?.toString())}
               onStatusChange={onStatusChange}
-              courseId={course._id?.toString()}
+              courseId={course._id ? course._id.toString() : ''}
             />
             <Divider mt={2} />
           </Box>
