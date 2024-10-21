@@ -8,10 +8,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     await connectDB();
 
-    const { name, email, password }: { name: string; email: string; password: string } = req.body;
+    const { name, email, password }: User = req.body;
 
     try {
-      const existingUser: User | null = await (UserModel as mongoose.Model<User, {}, User>).findOne({ email }).exec() as User | null;
+      const existingUser: User | null = await (UserModel as mongoose.Model<User, User, User>).findOne({ email }).exec() as User | null;
       if (existingUser) {
         return res.status(400).json({ error: "User already exists" });
       }

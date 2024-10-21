@@ -14,7 +14,7 @@ import ShowClients from "components/client/ShowClients";
 import FormComponent from "components/forms/FormComponent";
 import DarkModeToggle from "components/ui/userColorMode";
 import UserPopover from "components/ui/UserPopover";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -29,7 +29,7 @@ export default function Home() {
     );
   }
   if (!sessionData) {
-    router.push("/signin");
+    void router.push("/signin");
     return null;
   }
 

@@ -29,10 +29,10 @@ const ShowClients = () => {
 
   const fetchClients = async (searchText?: string) => {
     try {
-      const response = await axios.get("/api/clients", {
+      const response = await axios.get<{ data: Client[] }>("/api/clients", {
         params: { searchText },
       });
-      setClients(response.data?.data as Client[]);
+      setClients(response.data.data);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching clients:", err);

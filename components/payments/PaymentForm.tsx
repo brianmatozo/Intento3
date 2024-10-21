@@ -1,5 +1,5 @@
 // components/PaymentForm.tsx
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Flex,
@@ -70,10 +70,8 @@ const handleSubmit = async (data: MiscellaneousPayment) => {
       throw new Error("Failed to save data");
     }
 
-    const savedPayment = response.data as MiscellaneousPayment;
-    // console.log("Saved payment:", savedPayment);
-
-    onPaymentComplete(savedPayment as MiscellaneousPayment);
+    const savedPayment: MiscellaneousPayment = response.data;
+    onPaymentComplete(savedPayment);
   } catch (error) {
     console.error("Invalid payment data:", error);
   }

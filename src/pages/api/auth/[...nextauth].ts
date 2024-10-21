@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
           console.log("Invalid password");
           return null;
         }
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id, name: user.name, email: user.email } as const;
       },
     })
   ],

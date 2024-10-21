@@ -17,20 +17,20 @@ interface ClientItemProps {
 const ClientItem: React.FC<ClientItemProps> = ({ client, payments: initialPayments }) => {
 const [isCopied, setIsCopied] = useState(false);
 const [isOpen, setIsOpen] = useState(false);
-const [courseStatuses, setCourseStatuses] = useState<{ [key: string]: { certification: boolean; matricula: boolean } }>({});
-const [courses, setCourses] = useState(client.onlineCourses || []);
+const [courseStatuses, setCourseStatuses] = useState<Record<string, { certification: boolean; matricula: boolean }>>({});
+const [courses] = useState<onlineCourse[]>(client.onlineCourses ?? []);
 const [payments, setPayments] = useState(initialPayments);
 
 useEffect(() => {
-  const updatedStatuses: { [key: string]: { certification: boolean; matricula: boolean } } = {};
+  const updatedStatuses: Record<string, { certification: boolean; matricula: boolean }> = {};
 
   courses.forEach((course) => {
     const certificationTotal = payments
-      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === course._id)
+      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === course._id?.toString())
       .reduce((sum, p) => sum + p.amount, 0) || 0;
 
     const matriculaTotal = payments
-      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === course._id)
+      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === course._id?.toString())
       .reduce((sum, p) => sum + p.amount, 0) || 0;
 
     updatedStatuses[course._id] = {
@@ -48,11 +48,11 @@ const handleStatusChange = async (payment: MiscellaneousPayment) => {
   const updatedStatus = { ...courseStatuses };
   if (updatedStatus[courseId]) {
     const certificationTotal = payments
-      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseId)
+      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseId.toString())
       .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
 
     const matriculaTotal = payments
-      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseId)
+      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseId.toString())
       .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
 
     updatedStatus[courseId].certification = certificationTotal >= CERTIFICATION_PRICE;
@@ -77,8 +77,9 @@ const handleAddCourse = async (newCourse: Omit<onlineCourse, '_id'>) => {
 };
 
 const paymentDetails = `${client.amount} - ${client.paymentOptions || "No Declarado"} - ${client.paymentNumber || "No Declarado"}`;
-const handleCopyPayment = () => {
-  handleCopy(paymentDetails);
+
+const handleCopyPayment = async () => {
+  await handleCopy(paymentDetails).catch((err) => console.error(err));
 };
 
 return (

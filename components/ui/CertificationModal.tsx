@@ -2,7 +2,7 @@ import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, 
 import type { onlineCourse } from "models/online";
 import type { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 import CoursesList from "../payments/CoursesList";
-import { Client } from "models/client";
+import type { Client } from "models/client";
 import type { miscPayment } from "models/miscPayments";
 
 interface CertificationModalProps {

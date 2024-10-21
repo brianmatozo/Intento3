@@ -46,8 +46,8 @@ const SignIn = () => {
       });
       if (result?.error) {
         setSignInError("Invalid email or password");
-      }else{
-        router.push("/");
+      } else {
+        void router.push("/");
         return null;
       }
     } catch (error) {

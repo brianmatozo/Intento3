@@ -134,7 +134,7 @@ return (
         <Controller
           name="date"
           control={control}
-          defaultValue={new Date().toISOString().slice(0, 16) as any}
+          defaultValue={new Date().toISOString().slice(0, 16) as string}
           render={({ field }) => (
             <Input
               type="datetime-local"

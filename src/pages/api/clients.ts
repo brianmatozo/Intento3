@@ -1,5 +1,5 @@
 // pages/api/clients.ts
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { getAll } from "controllers/client";
 import { clientSchema } from "schema/clientSchema";
 import ClientModel, { type Client } from "models/client";

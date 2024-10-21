@@ -23,7 +23,7 @@ const ClientModeSwitch = () => {
 
   useEffect(() => {
     const subscription = watch((value) => {
-      setShowOnlineCourse(value.mode);
+      setShowOnlineCourse(Boolean(value.mode));
     });
     return () => subscription.unsubscribe();
   }, [watch]);
@@ -68,7 +68,7 @@ const ClientModeSwitch = () => {
         <>
           {fields.map((field, index) => (
             <Box key={field.id} mt={2}>
-              <OnlineCourseComponent control={control} index={index} />
+              <OnlineCourseComponent  index={index} />
               <DeleteIcon
                 boxSize={8}
                 cursor={"pointer"}

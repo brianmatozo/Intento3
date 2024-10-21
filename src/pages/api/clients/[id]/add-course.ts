@@ -4,10 +4,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type mongoose from "mongoose";
 import { onlineCourseSchema } from "schema/onlineCourseSchema";
 import ClientModel, { type Client } from "models/client";
+import type { onlineCourse } from "models/online";
 
 const addCourseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query; 
-  const newCourse = req.body;
+  const newCourse: onlineCourse = req.body;
 
   try {
     const validationResult = onlineCourseSchema.safeParse(newCourse);
@@ -19,7 +20,7 @@ const addCourseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!client) {
       return res.status(404).json({ error: "Client not found" });
     }
-    client.onlineCourses?.push(newCourse);
+    client.onlineCourses?.push(newCourse as onlineCourse);
     await client.save();
 
     res.status(200).json(newCourse);

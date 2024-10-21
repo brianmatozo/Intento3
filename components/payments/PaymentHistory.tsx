@@ -26,7 +26,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({ payments, courseId }) =
               <Text>
                 {new Date(payment.paymentDate).toLocaleDateString()}
                 {" - "}
-                {payment.miscPaymentOptions} - {payment.miscPaymentNumber}
+                {payment.miscPaymentOptions} - {String(payment.miscPaymentNumber)}
               </Text>
             </ListItem>
           ))}

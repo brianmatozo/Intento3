@@ -15,9 +15,10 @@ import type { z } from "zod";
 
 type OnlineCourseFormData = z.infer<typeof onlineCourseSchema>;
 
-const OnlineCourseComponent = forwardRef<HTMLSelectElement, any>(
-  ({ index, ...props }, ref) => {
-   
+const OnlineCourseComponent = forwardRef<HTMLSelectElement, {
+  index: number;
+}>(({ index }, _) => {
+  
     const {
       control,
       formState: { errors },
