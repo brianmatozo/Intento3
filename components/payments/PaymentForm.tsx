@@ -17,12 +17,13 @@ import {
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
 import { FormProvider, useForm } from "react-hook-form";
 import axios from "axios";
+import type { miscPayment } from "models/miscPayments";
 
 interface PaymentFormProps {
   clientId: string;
   courseId: string;
   paymentType: "certification" | "matricula";
-  onPaymentComplete: (payment: MiscellaneousPayment) => void;
+  onPaymentComplete: (payment: Omit<miscPayment, '_id'>) => Promise<void>;
 }
 
 export const PaymentForm: React.FC<PaymentFormProps> = ({
@@ -70,7 +71,7 @@ const handleSubmit = async (data: MiscellaneousPayment) => {
       throw new Error("Failed to save data");
     }
 
-    const savedPayment: MiscellaneousPayment = response.data;
+    const savedPayment: miscPayment = response.data;
     onPaymentComplete(savedPayment);
   } catch (error) {
     console.error("Invalid payment data:", error);

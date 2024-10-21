@@ -12,7 +12,7 @@ interface CertificationModalProps {
     courses: onlineCourse[];
     payments: miscPayment[];
     courseStatuses: Record<string, { certification: boolean; matricula: boolean }>;
-    onStatusChange: (payment: MiscellaneousPayment) => void;
+    onStatusChange: (payment: Omit<miscPayment, '_id'>) => Promise<void>;
   }
   
   const CertificationModal: React.FC<CertificationModalProps> = ({ isOpen, onClose, courses, payments, courseStatuses, onStatusChange, client }) => {

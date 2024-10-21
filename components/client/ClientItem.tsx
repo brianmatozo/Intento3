@@ -9,6 +9,8 @@ import type { onlineCourse } from "models/online";
 import axios from "axios";
 import AddCourseForm from "./AddCourseForm";
 import type { miscPayment } from "models/miscPayments";
+import { p } from "framer-motion/client";
+import mongoose from "mongoose";
 
 interface ClientItemProps {
     client: Client;
@@ -19,7 +21,7 @@ const [isCopied, setIsCopied] = useState(false);
 const [isOpen, setIsOpen] = useState(false);
 const [courseStatuses, setCourseStatuses] = useState<Record<string, { certification: boolean; matricula: boolean }>>({});
 const [courses] = useState<onlineCourse[]>(client.onlineCourses ?? []);
-const [payments, setPayments] = useState(initialPayments);
+const [payments, setPayments] = useState<miscPayment[]>(initialPayments);
 
 useEffect(() => {
   const updatedStatuses: Record<string, { certification: boolean; matricula: boolean }> = {};
@@ -41,9 +43,15 @@ useEffect(() => {
   setCourseStatuses(updatedStatuses);
 }, [payments, courses]);
 
-const handleStatusChange = async (payment: MiscellaneousPayment) => {
+const handleStatusChange = async (payment: Omit<miscPayment, '_id'>) => {
+  const updatedPayment: miscPayment = {
+    ...payment,
+    _id: new mongoose.Types.ObjectId(),
+  };
+  setPayments((prevPayments) => [...prevPayments, updatedPayment]);
+
   const courseId = payment.courseId?.toString();
-  setPayments((prevPayments) => [...prevPayments, payment]);
+  // setPayments((prevPayments) => [...prevPayments, payment]);
 
   const updatedStatus = { ...courseStatuses };
   if (updatedStatus[courseId]) {

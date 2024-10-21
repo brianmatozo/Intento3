@@ -10,7 +10,7 @@ interface CertificationStatusProps {
   clientId: string;
   certificationStatus: boolean;
   matriculaStatus: boolean;
-  onStatusChange: (payment: MiscellaneousPayment) => void;
+  onStatusChange: (payment: Omit<miscPayment, '_id'>) => Promise<void>;
   payments: miscPayment[]
   courseId: string
 }
@@ -29,8 +29,8 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
     setPaymentType(null);
   };
 
-  const handlePaymentComplete = (payment: MiscellaneousPayment) => {
-    onStatusChange(payment);
+  const handlePaymentComplete = async (payment: Omit<miscPayment, '_id'>) => {
+    await onStatusChange(payment);
     closePaymentModal();
   };
 
