@@ -1,7 +1,7 @@
 import { Box, Card, Tooltip, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { CopyIcon } from "@chakra-ui/icons";
-import { Client } from "models/client";
+import type { Client } from "models/client";
 
 interface ClientDetailsProps {
   lastClient: Client | null;
@@ -12,19 +12,19 @@ const ClientLegajo = ({ lastClient }: ClientDetailsProps) => {
 
   const clientDetails = () =>
     `🧑Nombre completo: 
-${lastClient?.fullname || ""}
+${lastClient?.fullname ?? ""}
 
 📱Numero de Telefono: 
-${lastClient?.phonenumber || ""}
+${lastClient?.phonenumber ?? ""}
 
 📧Correo electronico: 
-${lastClient?.email || ""}
+${lastClient?.email ?? ""}
 
 💰Detalles del Pago: 
-$${lastClient?.amount || 0} - ${lastClient?.paymentOptions || ""} - ${lastClient?.paymentNumber || ""}
+$${lastClient?.amount ?? 0} - ${lastClient?.paymentOptions ?? ""} - ${lastClient?.paymentNumber ?? ""}
 
 📍Curso: 
-${lastClient?.onlineCourses?.map((course) => course.name) || ""} - ${lastClient?.mode ? "Online" : "Presencial"}
+${lastClient?.onlineCourses?.map((course) => course.name).join(" - ") ?? ""} - ${lastClient?.mode ? "Online" : "Presencial"}
 
 👻Vendedores:
 Leandro y Brian

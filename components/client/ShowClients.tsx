@@ -3,7 +3,7 @@ import { Box, Button, Card, Heading, Input, Spinner, Text } from "@chakra-ui/rea
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import ClientItem from "components/client/ClientItem";
-import { Client } from "models/client";
+import type { Client } from "models/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -22,7 +22,7 @@ const ShowClients = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<SearchFormInputs>({
     resolver: zodResolver(searchSchema),
   });
@@ -32,7 +32,7 @@ const ShowClients = () => {
       const response = await axios.get("/api/clients", {
         params: { searchText },
       });
-      setClients(response.data.data);
+      setClients(response.data?.data as Client[]);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching clients:", err);
@@ -42,12 +42,12 @@ const ShowClients = () => {
   };
 
   useEffect(() => {
-    fetchClients();
+    void fetchClients();
   }, []);
 
   const onSubmit = (data: SearchFormInputs) => {
     setLoading(true);
-    fetchClients(data.searchText);
+    void fetchClients(data.searchText);
   };
 
   if (loading) {
@@ -81,7 +81,7 @@ const ShowClients = () => {
 
         {clients.length > 0 ? (
           clients.map((client) => (
-               <ClientItem key={client._id as string} client={client} payments={client.miscellaneousPayments || []} />
+            <ClientItem key={client._id} client={client} payments={client.miscellaneousPayments ?? []} />
           ))
         ) : (
           <Text>No hay alumnos</Text>

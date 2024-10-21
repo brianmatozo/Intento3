@@ -1,16 +1,16 @@
 import { Badge, Box, Divider } from "@chakra-ui/react";
 import CertificationStatus from "components/payments/CertificationStatus";
-import { Client } from "models/client";
-import { miscPayment } from "models/miscPayments";
-import { onlineCourse } from "models/online";
+import type { Client } from "models/client";
+import type { miscPayment } from "models/miscPayments";
+import type { onlineCourse } from "models/online";
 import { getBadgeColor } from "schema/courseColorSchema";
-import { MiscellaneousPayment } from "schema/miscPaymentSchemas";
+import type { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 
 interface CoursesListProps {
     client: Client;
     courses: onlineCourse[];
     payments: miscPayment[];
-    courseStatuses: { [key: string]: { certification: boolean; matricula: boolean } };
+    courseStatuses: Record<string, { certification: boolean; matricula: boolean }>;
     onStatusChange: (payment: MiscellaneousPayment) => void;
   }
   
@@ -26,9 +26,9 @@ interface CoursesListProps {
             </Box>
             <CertificationStatus
               clientId={client._id}
-              certificationStatus={courseStatuses[course._id]?.certification || false}
-              matriculaStatus={courseStatuses[course._id]?.matricula || false}
-              payments={payments.filter(p => p.courseId?.toString() === course._id)}
+              certificationStatus={courseStatuses[course._id]?.certification ?? false}
+              matriculaStatus={courseStatuses[course._id]?.matricula ?? false}
+              payments={payments.filter(p => p.courseId?.toString() === course._id?.toString())}
               onStatusChange={onStatusChange}
               courseId={course._id}
             />

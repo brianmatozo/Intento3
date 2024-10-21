@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { forwardRef } from "react";
 import { useFormContext, Controller } from "react-hook-form";
-import { onlineCourseSchema } from "schema/onlineCourseSchema";
-import { z } from "zod";
+import type { onlineCourseSchema } from "schema/onlineCourseSchema";
+import type { z } from "zod";
 
 type OnlineCourseFormData = z.infer<typeof onlineCourseSchema>;
 

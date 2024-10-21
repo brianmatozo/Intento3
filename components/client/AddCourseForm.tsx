@@ -1,13 +1,13 @@
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { Box, Button, FormControl, FormLabel, Input, Select, VStack } from "@chakra-ui/react";
-import { onlineCourse } from "models/online";
+import type { onlineCourse } from "models/online";
 
 interface AddCourseFormProps {
   onAddCourse: (newCourse: Omit<onlineCourse, '_id'>) => void;
 }
 
 const AddCourseForm: React.FC<AddCourseFormProps> = ({ onAddCourse }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<Omit<onlineCourse, "_id">>();
+  const { register, handleSubmit, formState: { errors } }: UseFormReturn<Omit<onlineCourse, "_id">> = useForm();
 
   // Date formatting logic
   const formattedCurrentDate = new Date().toISOString().slice(0, 10); 

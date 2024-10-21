@@ -38,16 +38,21 @@ const SignIn = () => {
   });
 
   const handleSignIn = async (data: SignInFormData) => {
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-    if (result?.error) {
-      setSignInError("Invalid email or password");
-    }else{
-      router.push("/");
-      return null;
+    try {
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+      if (result?.error) {
+        setSignInError("Invalid email or password");
+      }else{
+        router.push("/");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error during sign in:", error);
+      setSignInError("An error occurred during sign in");
     }
   };
 

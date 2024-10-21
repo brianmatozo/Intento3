@@ -6,7 +6,6 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverHeader,
   PopoverBody,
   Text,
   Box,
@@ -29,10 +28,10 @@ const UserPopover = ({ name, email }: UserPopoverProps) => {
         <PopoverCloseButton />
         <PopoverBody>
           <Box mb={3}>
-            <Text fontSize="sm">Nombre: {name || "Not provided"}</Text>
+            <Text fontSize="sm">Nombre: {name ?? "Not provided"}</Text>
           </Box>
           <Box mb={3}>
-            <Text fontSize="sm">Email: {email || "Not provided"}</Text>
+            <Text fontSize="sm">Email: {email ?? "Not provided"}</Text>
           </Box>
           <Button colorScheme="red" width="full" onClick={() => signOut()}>
             Logout

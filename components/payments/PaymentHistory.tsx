@@ -1,5 +1,5 @@
 import { Box, List, ListItem, Text } from "@chakra-ui/react";
-import { miscPayment } from "models/miscPayments";
+import type { miscPayment } from "models/miscPayments";
 
 interface PaymentHistoryProps {
   payments: miscPayment[];
@@ -15,7 +15,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = ({ payments, courseId }) =
         {payments
           .filter(p => 
             (p.paymentType === "certification" || p.paymentType === "matricula") && 
-            (!courseId || p.courseId?.toString() === courseId)
+            (!courseId || p.courseId?.toString() !== '[object Object]' && p.courseId?.toString() === courseId)
           )
           .map((payment, index) => (
             <ListItem key={index} display="flex" justifyContent="space-between">

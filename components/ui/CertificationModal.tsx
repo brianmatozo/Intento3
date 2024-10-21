@@ -1,9 +1,9 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
-import { onlineCourse } from "models/online";
-import { miscPayment } from "models/payments";
-import { MiscellaneousPayment } from "schema/miscPaymentSchemas";
+import type { onlineCourse } from "models/online";
+import type { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 import CoursesList from "../payments/CoursesList";
 import { Client } from "models/client";
+import type { miscPayment } from "models/miscPayments";
 
 interface CertificationModalProps {
     client: Client;
@@ -11,7 +11,7 @@ interface CertificationModalProps {
     onClose: () => void;
     courses: onlineCourse[];
     payments: miscPayment[];
-    courseStatuses: { [key: string]: { certification: boolean; matricula: boolean } };
+    courseStatuses: Record<string, { certification: boolean; matricula: boolean }>;
     onStatusChange: (payment: MiscellaneousPayment) => void;
   }
   

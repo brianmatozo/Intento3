@@ -6,10 +6,10 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useState } from "react";
-import { z } from "zod";
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { Client } from "models/client";
+import type { Client } from "models/client";
 import { clientSchema } from "schema/clientSchema";
 import ClientInputs from "components/client/ClientInputs";
 import ClientModeSwitch from "components/client/ClientModeSwitch";
@@ -39,7 +39,10 @@ const FormComponent = () => {
     setIsSubmitting(true);
     console.log("Submitted Data: ", data);
     try {
-      const response = await axios.post("/api/clients", data);
+      const response = await axios.post<FormData, { data: Client }>(
+        "/api/clients",
+        data
+      );
       setLastClient(response.data);
       methods.reset();
     } catch (error) {

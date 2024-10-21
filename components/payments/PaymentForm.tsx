@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import {
-  MiscellaneousPayment,
+ type MiscellaneousPayment,
   miscellaneousPaymentSchema,
 } from "schema/miscPaymentSchemas";
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
@@ -31,9 +31,9 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   courseId,
   onPaymentComplete,
 }) => {
-  const [amount, setAmount] = useState("");
-  const targetAmount =
-    paymentType === "certification" ? CERTIFICATION_PRICE : MATRICULA_PRICE;
+  // const [amount, setAmount] = useState("");
+  // const targetAmount =
+  //   paymentType === "certification" ? CERTIFICATION_PRICE : MATRICULA_PRICE;
 
   const methods = useForm<MiscellaneousPayment>();
 
@@ -70,10 +70,10 @@ const handleSubmit = async (data: MiscellaneousPayment) => {
       throw new Error("Failed to save data");
     }
 
-    const savedPayment = response.data;
+    const savedPayment = response.data as MiscellaneousPayment;
     // console.log("Saved payment:", savedPayment);
 
-    onPaymentComplete(savedPayment);
+    onPaymentComplete(savedPayment as MiscellaneousPayment);
   } catch (error) {
     console.error("Invalid payment data:", error);
   }

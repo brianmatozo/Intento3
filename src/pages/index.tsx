@@ -9,8 +9,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import ShowClients from "components/client/ShowClients";
 import FormComponent from "components/forms/FormComponent";
@@ -43,7 +41,7 @@ export default function Home() {
         <Flex justify="space-between" align="center">
           <Avatar src='/megaservice.svg'/>
           <DarkModeToggle />
-          <UserPopover name={sessionData.user?.name || "User"} email={sessionData.user?.email || undefined} />
+          <UserPopover name={sessionData.user?.name ?? "User"} email={sessionData.user?.email ?? undefined} />
         </Flex>
       </Box>
       <Divider />
@@ -63,40 +61,13 @@ export default function Home() {
           </TabPanels>
         </Tabs>
       </Box>
-      
-    
-
-        {/* <Flex justify="space-between" align="center" p={4} bg="gray.100">
-          <Text fontSize="xl">
-            Welcome, {sessionData.user?.name || "User"}!
-          </Text>
-          <DarkModeToggle />
-          <UserPopover
-            name={sessionData.user?.name || "User"}
-            email={sessionData.user?.email || undefined}
-          />
-        </Flex>
-        <Tabs isLazy>
-          <TabList display={"flex"}>
-            <Tab>Inscribir Alumno</Tab>
-            <Tab>Ver Alumnos</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <FormComponent />
-            </TabPanel>
-            <TabPanel>
-              <ShowClients />
-            </TabPanel>
-          </TabPanels>
-        </Tabs> */}
       </main>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+  const session = await getSession(context).catch(() => null);
   if (!session) {
     return {
       redirect: {
@@ -105,7 +76,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-
   return {
     props: { session },
   };

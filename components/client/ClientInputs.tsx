@@ -12,8 +12,8 @@ import {
 } from "@chakra-ui/react";
 import { EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import { useFormContext, Controller } from "react-hook-form";
-import { z } from "zod";
-import { clientSchema } from "schema/clientSchema";
+import type { z } from "zod";
+import type { clientSchema } from "schema/clientSchema";
 
 type FormData = z.infer<typeof clientSchema>;
 

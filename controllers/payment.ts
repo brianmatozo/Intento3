@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
-import { MiscellaneousPaymentModel, miscPayment } from "models/payments";
+import { MiscellaneousPaymentModel, miscPayment } from "models/miscPayments";
 
 export const getById = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

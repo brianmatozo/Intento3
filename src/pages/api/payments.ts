@@ -1,10 +1,10 @@
 // pages/api/payments.ts
 import { getByClientId } from "controllers/payment";
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
-import ClientModel, { Client } from "models/client";
-import { MiscellaneousPaymentModel } from "models/payments";
+import ClientModel, { type Client } from "models/client";
+import { MiscellaneousPaymentModel } from "models/miscPayments";
 import mongoose from "mongoose";
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { miscellaneousPaymentSchema } from "schema/miscPaymentSchemas";
 
 // POST route to create a new miscPayment

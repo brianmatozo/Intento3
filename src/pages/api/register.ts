@@ -1,28 +1,23 @@
 import connectDB from "lib/mongodb";
-import UserModel, { User } from "models/user";
-import { NextApiRequest, NextApiResponse } from "next";
+import UserModel, { type User } from "models/user";
+import type { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
-import mongoose from "mongoose";
+import type mongoose from "mongoose";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     await connectDB();
 
-    const { name, email, password } = req.body;
+    const { name, email, password }: { name: string; email: string; password: string } = req.body;
 
     try {
-      // Check if user already exists
-      const existingUser: User | null = await (UserModel as mongoose.Model<User>).findOne({ email }).exec();
+      const existingUser: User | null = await (UserModel as mongoose.Model<User, {}, User>).findOne({ email }).exec() as User | null;
       if (existingUser) {
         return res.status(400).json({ error: "User already exists" });
       }
-
-      // Hash password before saving
-      const hashedPassword = bcrypt.hashSync(password, 10);
-
-      const user = new UserModel({ name, email, password: hashedPassword });
-      await user.save();
-
+      const hashedPassword: string = bcrypt.hashSync(password, 10);
+      const user: User = new UserModel({ name, email, password: hashedPassword } as User);
+      await (user.save as () => Promise<mongoose.Document>)();
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       console.error(error);
@@ -34,3 +29,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+

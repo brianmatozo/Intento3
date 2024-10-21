@@ -1,22 +1,20 @@
 // pages/api/clients.ts
 import { NextApiRequest, NextApiResponse } from "next";
-import ClientModel from "../../../models/client";
 import { getAll } from "controllers/client";
 import { clientSchema } from "schema/clientSchema";
+import ClientModel, { type Client } from "models/client";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === "POST") {
-      const result = await clientSchema.safeParse(req.body);
+      const result = clientSchema.safeParse(req.body);
 
       if (!result.success) {
         return res.status(400).json({ error: result.error });
       }
 
-      const newClient = new ClientModel(result.data);
-
-      await newClient.save()
-
+      const newClient: Client = new ClientModel(result.data) as Client;
+      await newClient.save();
       res.status(201).json(newClient);  
     } else if (req.method === "GET") {
       return getAll(req, res);

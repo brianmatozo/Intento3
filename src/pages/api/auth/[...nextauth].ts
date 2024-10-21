@@ -1,10 +1,10 @@
 import connectDB from "lib/mongodb";
-import UserModel, { User } from "models/user";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import UserModel, { type User } from "models/user";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import mongoose from "mongoose";
-connectDB();
+import type mongoose from "mongoose";
+void connectDB();
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         const isValidPassword = bcrypt.compare(credentials.password, user.password);
-        if (!isValidPassword) {
+        if (!await isValidPassword) {
           console.log("Invalid password");
           return null;
         }

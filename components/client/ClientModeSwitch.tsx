@@ -51,7 +51,7 @@ const ClientModeSwitch = () => {
           render={({ field }) => (
             <Switch
               id="mode"
-              isChecked={field.value}
+              isChecked={field.value as boolean}
               onChange={(e) => {
                 field.onChange(e.target.checked);
                 setShowOnlineCourse(e.target.checked);

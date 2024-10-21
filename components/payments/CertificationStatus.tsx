@@ -1,10 +1,10 @@
 // components/CertificationStatus.tsx
 import React, { useState } from 'react';
-import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Text, List, ListItem, Flex, space, HStack } from '@chakra-ui/react';
+import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, HStack } from '@chakra-ui/react';
 import { PaymentForm } from './PaymentForm';
-import { MiscellaneousPayment } from 'schema/miscPaymentSchemas';
+import type { MiscellaneousPayment } from 'schema/miscPaymentSchemas';
 import PaymentHistory from './PaymentHistory';
-import { miscPayment } from 'models/miscPayments';
+import type { miscPayment } from 'models/miscPayments';
 
 interface CertificationStatusProps {
   clientId: string;
