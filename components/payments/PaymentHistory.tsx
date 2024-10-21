@@ -1,5 +1,5 @@
 import { Box, List, ListItem, Text } from "@chakra-ui/react";
-import { miscPayment } from "models/payments";
+import { miscPayment } from "models/miscPayments";
 
 interface PaymentHistoryProps {
   payments: miscPayment[];

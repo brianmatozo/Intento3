@@ -6,7 +6,6 @@ import {
   FormErrorMessage,
   Select,
   Checkbox,
-  Flex,
   HStack,
 } from "@chakra-ui/react";
 import { forwardRef } from "react";

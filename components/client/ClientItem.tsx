@@ -1,7 +1,6 @@
 import { Avatar, Badge, Box, Button, Flex, Text, Tooltip } from "@chakra-ui/react";
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
 import { Client } from "models/client";
-import { miscPayment } from "models/payments";
 import { useEffect, useState } from "react";
 import { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 import CertificationModal from "../ui/CertificationModal";
@@ -9,6 +8,7 @@ import { getBadgeColor } from "schema/courseColorSchema";
 import { onlineCourse } from "models/online";
 import axios from "axios";
 import AddCourseForm from "./AddCourseForm";
+import { miscPayment } from "models/miscPayments";
 
 interface ClientItemProps {
     client: Client;

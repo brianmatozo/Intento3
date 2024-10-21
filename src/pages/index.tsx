@@ -1,5 +1,7 @@
 import {
+  Avatar,
   Box,
+  Divider,
   Flex,
   Spinner,
   Tab,
@@ -8,10 +10,11 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import ShowClients from "components/client/ShowClients";
-import CourseForm from "trash/CourseForm";
 import FormComponent from "components/forms/FormComponent";
+import DarkModeToggle from "components/ui/userColorMode";
 import UserPopover from "components/ui/UserPopover";
 import { GetServerSideProps } from "next";
 import { getSession, useSession } from "next-auth/react";
@@ -35,23 +38,21 @@ export default function Home() {
   return (
     <>
       <main>
-        <Flex justify="space-between" align="center" p={4} bg="gray.100">
-          <Text fontSize="xl">
-            Welcome, {sessionData.user?.name || "User"}!
-          </Text>
-          <UserPopover
-            name={sessionData.user?.name || "User"}
-            email={sessionData.user?.email || undefined}
-          />
+      
+      <Box p={4}>
+        <Flex justify="space-between" align="center">
+          <Avatar src='/megaservice.svg'/>
+          <DarkModeToggle />
+          <UserPopover name={sessionData.user?.name || "User"} email={sessionData.user?.email || undefined} />
         </Flex>
-
-        <Tabs isLazy>
-          <TabList display={"flex"}>
+      </Box>
+      <Divider />
+      <Box p={4}>
+        <Tabs variant={"enclosed"}>
+          <TabList>
             <Tab>Inscribir Alumno</Tab>
             <Tab>Ver Alumnos</Tab>
-            <Tab>Crear Cursos</Tab>
           </TabList>
-
           <TabPanels>
             <TabPanel>
               <FormComponent />
@@ -59,11 +60,36 @@ export default function Home() {
             <TabPanel>
               <ShowClients />
             </TabPanel>
-            <TabPanel>
-              {/* <CourseForm /> */}
-            </TabPanel>
           </TabPanels>
         </Tabs>
+      </Box>
+      
+    
+
+        {/* <Flex justify="space-between" align="center" p={4} bg="gray.100">
+          <Text fontSize="xl">
+            Welcome, {sessionData.user?.name || "User"}!
+          </Text>
+          <DarkModeToggle />
+          <UserPopover
+            name={sessionData.user?.name || "User"}
+            email={sessionData.user?.email || undefined}
+          />
+        </Flex>
+        <Tabs isLazy>
+          <TabList display={"flex"}>
+            <Tab>Inscribir Alumno</Tab>
+            <Tab>Ver Alumnos</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <FormComponent />
+            </TabPanel>
+            <TabPanel>
+              <ShowClients />
+            </TabPanel>
+          </TabPanels>
+        </Tabs> */}
       </main>
     </>
   );

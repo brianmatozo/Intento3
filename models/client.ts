@@ -1,7 +1,7 @@
 // models/clientModel.ts
 import { Document, model, models, Schema } from "mongoose";
 import { onlineCourse, OnlineCourseSchema } from "./online";
-import { miscellaneousPaymentSchema, miscPayment } from "./payments";
+import { miscellaneousPaymentSchema, miscPayment } from "./miscPayments";
 
 export interface Client extends Document {
   _id: string;

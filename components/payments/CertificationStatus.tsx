@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Badge, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Text, List, ListItem, Flex, space, HStack } from '@chakra-ui/react';
 import { PaymentForm } from './PaymentForm';
 import { MiscellaneousPayment } from 'schema/miscPaymentSchemas';
-import { miscPayment } from 'models/payments';
 import PaymentHistory from './PaymentHistory';
+import { miscPayment } from 'models/miscPayments';
 
 interface CertificationStatusProps {
   clientId: string;

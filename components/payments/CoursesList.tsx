@@ -1,8 +1,8 @@
 import { Badge, Box, Divider } from "@chakra-ui/react";
 import CertificationStatus from "components/payments/CertificationStatus";
 import { Client } from "models/client";
+import { miscPayment } from "models/miscPayments";
 import { onlineCourse } from "models/online";
-import { miscPayment } from "models/payments";
 import { getBadgeColor } from "schema/courseColorSchema";
 import { MiscellaneousPayment } from "schema/miscPaymentSchemas";
 

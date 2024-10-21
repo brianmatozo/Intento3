@@ -3,7 +3,6 @@ import { Box, Button, Card, Heading, Input, Spinner, Text } from "@chakra-ui/rea
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import ClientItem from "components/client/ClientItem";
-// import ClientItem from "components/client/ClientItem";
 import { Client } from "models/client";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

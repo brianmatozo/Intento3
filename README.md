@@ -1,6 +1,6 @@
-# next-auth-mongoose-example
+# Client Management System
 
-A simple example of how to use [next-auth](https://next-auth.js.org/) with [mongoose](https://mongoosejs.com/) as the database adapter.
+A simple client management system built with Next.js, MongoDB, and React Hook Form
 
 ## How to use
 
@@ -11,6 +11,18 @@ A simple example of how to use [next-auth](https://next-auth.js.org/) with [mong
 	* `NEXTAUTH_SECRET`: a secret key for next-auth
 4. Run the development server with `npm run dev` or `yarn dev`
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result
+
+## Technologies used
+
+This example uses the following technologies:
+
+* Next.js as the React framework
+* next-auth for authentication
+* Mongoose as the database adapter
+* MongoDB as the database
+* TypeScript as the programming language 
+* Zod for form validations
+* Chakra UI as the component library
 
 ## What is this example showing?
 
