@@ -45,14 +45,35 @@ const SignIn = () => {
         redirect: false,
       });
       if (result?.error) {    
-        setSignInError("Invalid email or password");
+        setSignInError(result.error || "Invalid email or password");
+        toast({
+          title: "Sign In Failed",
+          description: result.error || "Invalid email or password",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
       } else {
+        toast({
+          title: "Sign In Successful",
+          description: "Welcome back!",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
         void router.push("/");
       }
     } catch (error) {
       // Log the full error for better insight
       console.error("Error during sign in:", error instanceof Error ? error.message : error);
       setSignInError("An error occurred during sign in");
+      toast({
+        title: "Sign In Error",
+        description: "An error occurred during sign in. Please try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 

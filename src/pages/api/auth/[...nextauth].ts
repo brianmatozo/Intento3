@@ -3,7 +3,7 @@ import UserModel, { type AuthUser, type UserDocument } from "models/user";
 import NextAuth from "next-auth";
 import { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 void connectDB();
 
 export const authOptions: NextAuthOptions = {
@@ -14,33 +14,45 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials: Record<"email" | "password", string> | undefined) => {
-        if (!credentials) return null;
+      authorize: async (credentials) => {
+        try {
+          if (!credentials) {
+            throw new Error("Missing credentials");
+          }
+          // console.log("Received credentials:", credentials);
 
-        const user: UserDocument | null = await UserModel.findOne({ email: credentials.email }).exec();
-        
-        if (!user) {
-          console.log("User not found");
+          const user: UserDocument | null = await UserModel.findOne({
+            email: credentials.email,
+          }).exec();
+
+          if (!user) {
+            throw new Error("User not found");
+          }
+          const passwordMatch = bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+          } as AuthUser;
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error("Error during authorization:", error.message);
+          } else {
+            console.error("Unknown error during authorization:", error);
+          }
           return null;
         }
-
-        const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-        if (!isValidPassword) {
-          console.log("Invalid password");
-          return null;
-        }
-        return Promise.resolve({ id: user._id.toString(), 
-                 name : user.name, 
-                 email: user.email 
-                } as AuthUser);
       },
-    })
+    }),
   ],
   pages: {
-    signIn: "/signin"
+    signIn: "/signin",
   },
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -54,10 +66,10 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
       }
       return session;
-    }
+    },
   },
   theme: {
-    colorScheme: "light"
+    colorScheme: "light",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

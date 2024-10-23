@@ -20,11 +20,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await user.save();
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "User registration failed" });
+      console.error("Error during user registration:", error);
+      return res.status(500).json({ error: "User registration failed" });
     }
   } else {
-    res.status(405).json({ message: "Method Not Allowed" });
+    return res.status(405).json({ message: "Method Not Allowed" });
   }
 };  
 
