@@ -11,12 +11,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { name, email, password }: User = req.body;
 
     try {
-      const existingUser: User | null = await (UserModel as mongoose.Model<User, User, User>).findOne({ email }).exec() as User | null;
+      const existingUser: User | null = await (UserModel as mongoose.Model<User>).findOne({ email }).exec();
       if (existingUser) {
         return res.status(400).json({ error: "User already exists" });
       }
       const hashedPassword: string = bcrypt.hashSync(password, 10);
-      const user: User = new UserModel({ name, email, password: hashedPassword } as User);
+      const user: mongoose.Document<User> = new UserModel({ name, email, password: hashedPassword });
       await (user.save as () => Promise<mongoose.Document>)();
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {

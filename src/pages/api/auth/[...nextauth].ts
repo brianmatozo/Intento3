@@ -2,7 +2,7 @@ import connectDB from "lib/mongodb";
 import UserModel, { type User } from "models/user";
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
 import type mongoose from "mongoose";
 void connectDB();
 
