@@ -3,7 +3,7 @@ import UserModel, { type AuthUser, type UserDocument } from "models/user";
 import NextAuth from "next-auth";
 import { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 void connectDB();
 
 export const authOptions: NextAuthOptions = {
@@ -24,11 +24,11 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // const isValidPassword = await bcrypt.compare(credentials.password, user.password);
-        // if (!await isValidPassword) {
-        //   console.log("Invalid password");
-        //   return null;
-        // }
+        const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+        if (!isValidPassword) {
+          console.log("Invalid password");
+          return null;
+        }
         return Promise.resolve({ id: user._id.toString(), 
                  name : user.name, 
                  email: user.email 
@@ -36,6 +36,9 @@ export const authOptions: NextAuthOptions = {
       },
     })
   ],
+  pages: {
+    signIn: "/signin"
+  },
   session: {
     strategy: "jwt"
   },
@@ -56,6 +59,7 @@ export const authOptions: NextAuthOptions = {
   theme: {
     colorScheme: "light"
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);
