@@ -8,10 +8,10 @@ import type { onlineCourse } from "models/online";
 
 const addCourseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query; 
-  const newCourse: onlineCourse = req.body;
+  // const newCourse: onlineCourse = req.body;
 
   try {
-    const validationResult = onlineCourseSchema.safeParse(newCourse);
+    const validationResult = onlineCourseSchema.safeParse(req.body);
     if (!validationResult.success) {
       return res.status(400).json({ error: validationResult.error });
     }

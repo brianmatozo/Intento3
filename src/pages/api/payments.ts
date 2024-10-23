@@ -2,7 +2,7 @@
 import { getByClientId } from "controllers/payment";
 import { CERTIFICATION_PRICE, MATRICULA_PRICE } from "lib/prices";
 import ClientModel, { type Client } from "models/client";
-import { MiscellaneousPaymentModel, type miscPayment } from "models/miscPayments";
+import { MiscellaneousPaymentModel } from "models/miscPayments";
 import type mongoose from "mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { miscellaneousPaymentSchema } from "schema/miscPaymentSchemas";
@@ -71,7 +71,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 async function calculatePaymentTotal(client: Client, paymentType: string, courseId: string | undefined): Promise<number> {
-  const payments = await (MiscellaneousPaymentModel as mongoose.Model<miscPayment>).find({
+  const payments = await MiscellaneousPaymentModel.find({
     _id: { $in: client.miscellaneousPayments },
     paymentType,
     courseId: courseId?.toString()

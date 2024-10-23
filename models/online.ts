@@ -35,7 +35,7 @@ export const OnlineCourseSchema = new Schema<onlineCourse>({
 });
 
 const OnlineCourseModel =
-  models.OnlineCourse ||
+  models.OnlineCourse ??
   model<onlineCourse>("OnlineCourse", OnlineCourseSchema, "onlineCourses");
 
 export default OnlineCourseModel;

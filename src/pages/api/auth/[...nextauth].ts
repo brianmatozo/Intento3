@@ -3,9 +3,12 @@ import UserModel, { type User } from "models/user";
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import bcrypt from "bcryptjs";
-import type mongoose from "mongoose";
 void connectDB();
-
+type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+}
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -17,7 +20,7 @@ export const authOptions: NextAuthOptions = {
       authorize: async (credentials) => {
         if (!credentials) return null;
 
-        const user: User | null = await (UserModel as mongoose.Model<User>).findOne({ email: credentials.email }).exec();
+        const user: User | null = await (UserModel).findOne({ email: credentials.email }).exec();
         
         if (!user) {
           console.log("User not found");
@@ -29,7 +32,10 @@ export const authOptions: NextAuthOptions = {
         //   console.log("Invalid password");
         //   return null;
         // }
-        return { id: user.id, name: user.name, email: user.email };
+        return { id: user.id as string, 
+                 name : user.name, 
+                 email: user.email 
+                } as AuthUser;
       },
     })
   ],

@@ -1,7 +1,7 @@
 // models/clientModel.ts
-import { Document, model, models, Schema } from "mongoose";
-import { onlineCourse, OnlineCourseSchema } from "./online";
-import { miscellaneousPaymentSchema, miscPayment } from "./miscPayments";
+import { type Document, model, models, Schema } from "mongoose";
+import { type onlineCourse, OnlineCourseSchema } from "./online";
+import { miscellaneousPaymentSchema, type miscPayment } from "./miscPayments";
 
 export interface Client extends Document {
   _id: string;
@@ -33,6 +33,6 @@ const ClientSchema = new Schema<Client>({
 
 // Check for existing model or create a new one
 const ClientModel =
-  models.Client || model<Client>("Client", ClientSchema, "clients");
+  models.Client ?? model<Client>("Client", ClientSchema, "clients");
 
 export default ClientModel;

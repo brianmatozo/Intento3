@@ -1,7 +1,8 @@
 // controllers/client.ts
-import { NextApiRequest, NextApiResponse } from "next";
-import ClientModel, { Client } from "../models/client";
-import mongoose, { FilterQuery } from "mongoose";
+import type { NextApiRequest, NextApiResponse } from "next";
+import ClientModel, { type Client } from "../models/client";
+import { type FilterQuery } from "mongoose";
+import type mongoose from "mongoose";
 
 export const getAll = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

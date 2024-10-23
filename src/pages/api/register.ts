@@ -8,16 +8,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     await connectDB();
 
-    const { name, email, password }: User = req.body;
+    const { name, email, password }: User = req.body as User;
 
     try {
-      const existingUser: User | null = await (UserModel as mongoose.Model<User>).findOne({ email }).exec();
+      const existingUser: User | null = await (UserModel).findOne({ email }).exec();
       if (existingUser) {
         return res.status(400).json({ error: "User already exists" });
       }
       const hashedPassword: string = bcrypt.hashSync(password, 10);
-      const user: mongoose.Document<User> = new UserModel({ name, email, password: hashedPassword });
-      await (user.save as () => Promise<mongoose.Document>)();
+      const user: mongoose.HydratedDocument<User> = new UserModel({ name, email, password: hashedPassword });
+      await user.save();
       res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       console.error(error);

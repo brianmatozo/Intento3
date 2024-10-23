@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 export default function Home() {
   const { data: sessionData, status } = useSession();
   const router = useRouter();
+  const avatarSrc = useColorModeValue('/home.svg', '/home-light.svg');
   if (status === "loading") {
     return (
       <Box maxW={"xl"} mx={"auto"} mt={8}>
@@ -37,10 +38,9 @@ export default function Home() {
   return (
     <>
       <main>
-      
       <Box p={4}>
         <Flex justify="space-between" align="center">
-          <Avatar src={useColorModeValue('/home.svg', '/home-light.svg')} />
+          <Avatar src={avatarSrc} />
           <DarkModeToggle />
           <UserPopover name={sessionData.user?.name ?? "User"} email={sessionData.user?.email ?? undefined} />
         </Flex>
