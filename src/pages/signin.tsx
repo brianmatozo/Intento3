@@ -49,12 +49,9 @@ const SignIn = () => {
       } else {
         void router.push("/");
       }
-    } catch (error: any) {
-      console.error("Error during sign in:", error);
-      if (error instanceof Error) {
-        console.error("Error details:", error.message);
-        console.error("Error stack:", error.stack);
-      }
+    } catch (error) {
+      // Log the full error for better insight
+      console.error("Error during sign in:", error instanceof Error ? error.message : error);
       setSignInError("An error occurred during sign in");
     }
   };
