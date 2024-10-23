@@ -1,14 +1,11 @@
 import connectDB from "lib/mongodb";
-import UserModel, { type User } from "models/user";
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import UserModel, { type AuthUser, type UserDocument } from "models/user";
+import NextAuth from "next-auth";
+import { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 // import bcrypt from "bcryptjs";
 void connectDB();
-type AuthUser = {
-  id: string;
-  name: string;
-  email: string;
-}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -17,10 +14,10 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      authorize: async (credentials) => {
+      authorize: async (credentials: Record<"email" | "password", string> | undefined) => {
         if (!credentials) return null;
 
-        const user: User | null = await (UserModel).findOne({ email: credentials.email }).exec();
+        const user: UserDocument | null = await UserModel.findOne({ email: credentials.email }).exec();
         
         if (!user) {
           console.log("User not found");
@@ -32,10 +29,10 @@ export const authOptions: NextAuthOptions = {
         //   console.log("Invalid password");
         //   return null;
         // }
-        return { id: user.id as string, 
+        return Promise.resolve({ id: user._id.toString(), 
                  name : user.name, 
                  email: user.email 
-                } as AuthUser;
+                } as AuthUser);
       },
     })
   ],
