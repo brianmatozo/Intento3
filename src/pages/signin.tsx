@@ -44,7 +44,7 @@ const SignIn = () => {
         password: data.password,
         redirect: false,
       });
-      if (result?.error) {
+      if (result?.error) {    
         setSignInError("Invalid email or password");
       } else {
         void router.push("/");
@@ -57,20 +57,8 @@ const SignIn = () => {
   };
 
   const handleRegister = async (data: RegisterFormData) => {
-    if (data.secretKey !== process.env.NEXTAUTH_SECRET) {
-      toast({
-        title: "Invalid secret password.",
-        description: "You are not allowed to register.",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
-      return;
-    }
-  
-    const hashedPassword = bcrypt.hashSync(data.password, 10);
-  
     try {
+      const hashedPassword = bcrypt.hashSync(data.password, 10);
       await axios.post("/api/register", { ...data, password: hashedPassword });
       toast({
         title: "Registration successful.",
