@@ -21,25 +21,43 @@ const [courseStatuses, setCourseStatuses] = useState<Record<string, { certificat
 const [courses] = useState<onlineCourse[]>(client.onlineCourses ?? []);
 const [payments, setPayments] = useState<miscPayment[]>(initialPayments);
 
-useEffect(() => {
+// Helper function to calculate and update course statuses
+const updateCourseStatuses = (payments: miscPayment[], courses: onlineCourse[], additionalPayment?: miscPayment) => {
   const updatedStatuses: Record<string, { certification: boolean; matricula: boolean }> = {};
 
   courses.forEach((course) => {
     const courseIdString = course._id?.toString() ?? '';
-    const certificationTotal = payments
+
+    let certificationTotal = payments
       .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseIdString)
-      .reduce((sum, p) => sum + p.amount, 0) || 0;
+      .reduce((sum, p) => sum + p.amount, 0);
 
-    const matriculaTotal = payments
+    let matriculaTotal = payments
       .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseIdString)
-      .reduce((sum, p) => sum + p.amount, 0) || 0;
+      .reduce((sum, p) => sum + p.amount, 0);
 
-    updatedStatuses[course._id] = {
+    // If there's an additional payment (from handleStatusChange), include it in the totals
+    if (additionalPayment && additionalPayment.courseId?.toString() === courseIdString) {
+      if (additionalPayment.paymentType === 'certification') {
+        certificationTotal += additionalPayment.amount;
+      } else if (additionalPayment.paymentType === 'matricula') {
+        matriculaTotal += additionalPayment.amount;
+      }
+    }
+
+    updatedStatuses[courseIdString] = {
       certification: certificationTotal >= CERTIFICATION_PRICE,
-      matricula: matriculaTotal >= MATRICULA_PRICE
+      matricula: matriculaTotal >= MATRICULA_PRICE,
     };
   });
-  setCourseStatuses(updatedStatuses);
+
+  return updatedStatuses;
+};
+
+useEffect(() => {
+  // Update statuses using the helper function
+  const newStatuses = updateCourseStatuses(payments, courses);
+  setCourseStatuses(newStatuses);
 }, [payments, courses]);
 
 const handleStatusChange = async (payment: Omit<miscPayment, '_id'>) => {
@@ -49,23 +67,11 @@ const handleStatusChange = async (payment: Omit<miscPayment, '_id'>) => {
   };
   setPayments((prevPayments) => [...prevPayments, updatedPayment]);
 
-  const courseId = payment.courseId?.toString() ?? '';
-
-  const updatedStatus = { ...courseStatuses };
-  if (updatedStatus[courseId]) {
-    const certificationTotal = payments
-      .filter(p => p.paymentType === 'certification' && p.courseId?.toString() === courseId)
-      .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
-
-    const matriculaTotal = payments
-      .filter(p => p.paymentType === 'matricula' && p.courseId?.toString() === courseId)
-      .reduce((sum, p) => sum + p.amount, 0) + payment.amount;
-
-    updatedStatus[courseId].certification = certificationTotal >= CERTIFICATION_PRICE;
-    updatedStatus[courseId].matricula = matriculaTotal >= MATRICULA_PRICE;
-  }
-  setCourseStatuses(updatedStatus);
+  // Update statuses with the additional new payment
+  const newStatuses = updateCourseStatuses(payments, courses, updatedPayment);
+  setCourseStatuses(newStatuses);
 };
+
 
 const handleCopy = async (text: string) => {
   await navigator.clipboard.writeText(text);
