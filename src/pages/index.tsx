@@ -9,6 +9,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import ShowClients from "components/client/ShowClients";
 import FormComponent from "components/forms/FormComponent";
@@ -39,7 +40,7 @@ export default function Home() {
       
       <Box p={4}>
         <Flex justify="space-between" align="center">
-          <Avatar src='/megaservice.svg'/>
+          <Avatar src={useColorModeValue('/home.svg', '/home-light.svg')} />
           <DarkModeToggle />
           <UserPopover name={sessionData.user?.name ?? "User"} email={sessionData.user?.email ?? undefined} />
         </Flex>

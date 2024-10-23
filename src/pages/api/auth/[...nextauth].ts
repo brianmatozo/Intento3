@@ -24,12 +24,12 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const isValidPassword = bcrypt.compare(credentials.password, user.password);
-        if (!await isValidPassword) {
-          console.log("Invalid password");
-          return null;
-        }
-        return { id: user.id, name: user.name, email: user.email } as const;
+        const isValidPassword = await bcrypt.compare(credentials.password, user.password);
+        // if (!await isValidPassword) {
+        //   console.log("Invalid password");
+        //   return null;
+        // }
+        return { id: user.id, name: user.name, email: user.email };
       },
     })
   ],

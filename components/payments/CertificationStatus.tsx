@@ -56,34 +56,6 @@ export const CertificationStatus: React.FC<CertificationStatusProps> = ({ client
         {matriculaStatus ? "Matriculado" : "No Matriculado"}
       </Badge>
       </HStack>
-      
-      {/* <Flex justifyContent={"space-between"}>
-      <Box mt={2}>
-        <Text fontWeight="bold">Pagos Certificación:</Text>
-        <List>
-          {payments
-            .filter(p => p.paymentType === "certification" && p.courseId?.toString() === courseId)  // Filter by paymentType and courseId
-            .map((payment, index) => (
-              <ListItem key={index}>
-                {payment.amount} - {new Date(payment.paymentDate).toLocaleDateString()}
-              </ListItem>
-            ))}
-        </List>
-      </Box>
-
-      <Box mt={2}>
-        <Text fontWeight="bold">Pagos Matrícula:</Text>
-        <List>
-          {payments
-            .filter(p => p.paymentType === "matricula" && p.courseId?.toString() === courseId)  // Filter by paymentType and courseId
-            .map((payment, index) => (
-              <ListItem key={index}>
-                {payment.amount} - {new Date(payment.paymentDate).toLocaleDateString()}
-              </ListItem>
-            ))}
-        </List>
-      </Box>
-      </Flex> */}
 
       <PaymentHistory payments={payments} courseId={courseId}/>
 

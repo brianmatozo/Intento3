@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!client.miscellaneousPayments) {
         client.miscellaneousPayments = [];
       }
-      client.miscellaneousPayments?.push(savedPayment._id);
+      client.miscellaneousPayments?.push(savedPayment);
 
       // Calculate total payments for this course for certification and matricula
       const certificationTotal = await calculatePaymentTotal(client, "certification", result.data.courseId);

@@ -30,4 +30,4 @@ const addCourseHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default addCourseHandler;
+export default addCourseHandler; 
