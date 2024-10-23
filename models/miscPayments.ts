@@ -3,6 +3,7 @@ import mongoose, { model, models, Schema, type Model } from "mongoose";
 
 
 export interface miscPayment {
+  _id: mongoose.Types.ObjectId;
   amount: number;
   paymentType: "certification" | "matricula";
   clientId: mongoose.Types.ObjectId;
