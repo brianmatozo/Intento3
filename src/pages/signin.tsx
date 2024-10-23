@@ -48,10 +48,13 @@ const SignIn = () => {
         setSignInError("Invalid email or password");
       } else {
         void router.push("/");
-        return null;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error during sign in:", error);
+      if (error instanceof Error) {
+        console.error("Error details:", error.message);
+        console.error("Error stack:", error.stack);
+      }
       setSignInError("An error occurred during sign in");
     }
   };
