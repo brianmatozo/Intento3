@@ -30,10 +30,10 @@ export default function Home() {
       </Box>
     );
   }
-  if (!sessionData) {
-    void router.push("/signin");
-    return null;
-  }
+  // if (!sessionData) {
+  //   void router.push("/signin");
+  //   return null;
+  // }
 
   return (
     <>
@@ -42,7 +42,7 @@ export default function Home() {
         <Flex justify="space-between" align="center">
           <Avatar src={avatarSrc} />
           <DarkModeToggle />
-          <UserPopover name={sessionData.user?.name ?? "User"} email={sessionData.user?.email ?? undefined} />
+          {/* <UserPopover name={sessionData.user?.name ?? "User"} email={sessionData.user?.email ?? undefined} /> */}
         </Flex>
       </Box>
       <Divider />
