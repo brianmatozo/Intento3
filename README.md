@@ -6,8 +6,6 @@ Aplicación hecha con Next.js, MongoDB, y React Hook Form.
 
 Este proyecto utiliza Docker y está disponible en DockerHub.
 
-1. Clona este repositorio:
-
 git...
 ```bash
 git clone https://github.com/brianmatozo/Intento3.git
