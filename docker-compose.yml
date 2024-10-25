@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - MONGODB_URL=${MONGODB_URL}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXT_PUBLIC_CERTIFICATION_PRICE=${NEXT_PUBLIC_CERTIFICATION_PRICE}
+      - NEXT_PUBLIC_MATRICULA_PRICE=${NEXT_PUBLIC_MATRICULA_PRICE}
+      - NEXT_PUBLIC_MESES_EXPIRACION=${NEXT_PUBLIC_MESES_EXPIRACION}
+    volumes:
+      - .:/app
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
