@@ -1,20 +1,20 @@
-# Sistema de gestion de Alumno
+# Sistema de gestión de Alumnos
 
-Aplicacion hecha con Next.js, MongoDB, and React Hook Form
+Aplicación hecha con Next.js, MongoDB, y React Hook Form.
 
-## Como usar?
+## ¿Cómo usar?
 
-Este proyecto utiliza Docker y este en DockerHub
+Este proyecto utiliza Docker y está disponible en DockerHub.
 
 1. Clona este repositorio:
-
+```bash
 git clone https://github.com/brianmatozo/Intento3.git
 cd mi-proyecto
-
-
-2. docker:
-
+```
+docker...
+```bash
 docker pull brianmatozo/mi-proyecto:latest
+```
 <!-- ## Technologies used
 
 This example uses the following technologies:
