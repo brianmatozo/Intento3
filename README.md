@@ -11,6 +11,10 @@ Este proyecto utiliza Docker y este en DockerHub
 git clone https://github.com/brianmatozo/Intento3.git
 cd mi-proyecto
 
+
+2. docker:
+
+docker pull brianmatozo/mi-proyecto:latest
 <!-- ## Technologies used
 
 This example uses the following technologies:
